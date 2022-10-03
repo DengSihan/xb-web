@@ -1,5 +1,5 @@
 <template>
 	<main>
-		login
+		company index
 	</main>
 </template>
