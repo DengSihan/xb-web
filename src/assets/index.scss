@@ -4,3 +4,7 @@
 
 @import 'nprogress/nprogress.css';
 @import 'library.scss';
+
+html {
+	@apply relative h-screen w-screen;
+}

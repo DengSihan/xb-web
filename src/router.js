@@ -43,18 +43,33 @@ routes['admin'] = [
 import guestCompany from '~/middlewares/company/guest.js';
 import authCompany from '~/middlewares/company/auth.js';
 routes['company'] = [
-	{
-		path: '/',
-		name: 'index',
-		component: () => import('~/pages/company/index.vue'),
-		beforeEnter: authCompany,
-	},
+	
 	{
 		path: '/login',
 		name: 'login',
 		component: () => import('~/pages/company/login.vue'),
 		beforeEnter: guestCompany,
-	}
+	},
+
+	{
+		path: '/',
+		component: () => import('~/pages/company/_dashboard.vue'),
+		beforeEnter: authCompany,
+		children: [
+			{
+				path: '',
+				name: 'index',
+				component: () => import('~/pages/company/index.vue'),
+			},
+			{
+				path: 'stores',
+				name: 'stores',
+				component: () => import('~/pages/company/stores/index.vue'),
+			}
+		]
+	},
+
+
 ];
 
 const router = createRouter({
