@@ -25,21 +25,29 @@ export const useForm = formData => {
 				lodash.cloneDeep(formData)
 			)
 		),
-		loading = ref(false),
-		alert = ref(''),
-		hasAlert = computed(() => !!alert.value);
+		loading = ref(false);
 
-	let handleFormError = error => {
-		let { data } = error.response;
-		alert.value = data.message;
+	let handleFormErrors = err => {
+
+		let { data } = err.response;
+		
+		Object.keys(data.errors).forEach(key => {
+			errors.value[key] = data.errors[key];
+		});
 	};
 	
+	let clearFormErrors = () => {
+
+		Object.keys(errors.value).forEach(key => {
+			errors.value[key] = [];
+		});
+	};
+
 	return {
 		loading,
 		form,
 		errors,
-		handleFormError,
-		alert,
-		hasAlert,
+		handleFormErrors,
+		clearFormErrors,
 	};
 }

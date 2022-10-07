@@ -1,51 +1,40 @@
 <template>
-	<main>
-		
-		<form
-			class="w-full sm:w-full md:w-1/2 lg:w-[400px] mx-auto px-6 rounded border shadow my-16"
-			@submit.prevent="login">
+	<form
+		class="w-full sm:w-full md:w-1/2 lg:w-[400px] mx-auto my-16"
+		@submit.prevent="login">
 
-			<h1
-				class="my-6 text-xl font-bold">
-				登录
-				<i
-					class="mdi mdi-login-variant pl-2"></i>
-			</h1>
+		<h1
+			class="my-6 text-xl font-bold">
+			登录
+			<i
+				class="mdi mdi-login-variant pl-2"></i>
+		</h1>
 
-			<xb-input
-				class="my-6"
-				name="company"
-				placeholder="<i class='mdi mdi-account-multiple pr-2'></i>公司代码"
-				v-model="form.company"
-				v-model:errors="errors.company"
-				required/>
-			
-			<xb-input
-				class="my-6"
-				name="username"
-				placeholder="<i class='mdi mdi-account pr-2'></i>用户编号"
-				v-model="form.code"
-				v-model:errors="errors.code"
-				required/>
+		<xb-input
+			class="my-6"
+			name="username"
+			placeholder="<i class='mdi mdi-account-multiple pr-2'></i>公司代码"
+			v-model="form.code"
+			v-model:errors="errors.code"
+			required/>
 
-			<xb-input
-				class="my-6"
-				name="password"
-				type="password"
-				placeholder="<i class='mdi mdi-key pr-2'></i>密码"
-				v-model="form.password"
-				v-model:errors="errors.password"
-				required/>
+		<xb-input
+			class="my-6"
+			name="password"
+			type="password"
+			placeholder="<i class='mdi mdi-key pr-2'></i>密码"
+			v-model="form.password"
+			v-model:errors="errors.password"
+			required/>
 
-			<xb-button
-				class="w-full block my-6"
-				:loading="loading">
-				登录<i class="mdi mdi-send pl-2"></i>
-			</xb-button>
+		<xb-button
+			class="w-full block my-6"
+			:loading="loading">
+			登录
+			<i class="mdi mdi-send pl-1"></i>
+		</xb-button>
 
-		</form>
-
-	</main>
+	</form>
 </template>
 
 <script setup>
@@ -55,19 +44,45 @@ const {
 	loading,
 	form,
 	errors,
-	handleFormError,
-	alert,
-	hasAlert,
+	handleFormErrors,
+	clearFormErrors,
 } = useForm({
-	company: '',
 	code: '',
 	password: '',
-})
+});
 </script>
 
 <script>
+
+import axios from '~/plugins/axios.js';
+import { useAuth } from '~/store/company/auth.js';
+
 export default {
 	
+	methods: {
+		login() {
+
+			this.loading = true;
+
+			axios.post(`/auth/tokens`, this.form)
+				.then(({ data }) => {
+					
+					this.clearFormErrors();
+					
+					useAuth().setAuth(data);
+
+					this.$router.push({
+						name: 'index',
+					});
+				})
+				.catch(err => {
+					this.handleFormErrors(err);
+				})
+				.finally(() => {
+					this.loading = false;
+				});
+		}
+	}
 }
 </script>
 

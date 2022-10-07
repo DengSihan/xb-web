@@ -7,7 +7,6 @@ import { getCurrentMode } from '~/plugins/mode.js';
 // https://github.com/vitejs/vite/issues/4945
 const page = path => () => import(`./pages/${path}.vue`);
 
-
 const routes = {};
 
 routes['index'] = [
@@ -15,6 +14,16 @@ routes['index'] = [
 		path: '/',
 		name: 'index',
 		component: () => import('~/pages/index/index.vue'),
+	},
+	{
+		path: '/download',
+		name: 'download',
+		component: () => import('~/pages/index/download.vue'),
+	},
+	{
+		path: '/win-win',
+		name: 'win-win',
+		component: () => import('~/pages/index/win-win.vue'),
 	}
 ];
 
@@ -31,16 +40,20 @@ routes['admin'] = [
 	}
 ];
 
+import guestCompany from '~/middlewares/company/guest.js';
+import authCompany from '~/middlewares/company/auth.js';
 routes['company'] = [
 	{
 		path: '/',
 		name: 'index',
 		component: () => import('~/pages/company/index.vue'),
+		beforeEnter: authCompany,
 	},
 	{
 		path: '/login',
 		name: 'login',
 		component: () => import('~/pages/company/login.vue'),
+		beforeEnter: guestCompany,
 	}
 ];
 
@@ -53,7 +66,7 @@ router.beforeEach((to, from, next) => {
 	NProgress.start();
 	next();
 });
-router.afterEach(transition => {
+router.afterEach(() => {
 	NProgress.done();
 });
 
