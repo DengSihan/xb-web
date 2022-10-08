@@ -1,10 +1,16 @@
+<style lang="scss">
+	#app {
+		@apply relative h-screen w-screen;
+	}
+</style>
+
 <template>
 
 	<aside
 		class="
-			w-[70vw] sm:w-[70wv] md:w-[max(50vw,300px)] lg:w-[260px]
+			w-[60vw] sm:w-[60wv] md:w-[max(40vw,300px)] lg:w-[260px]
 			h-screen
-			fixed top-0 left-0
+			fixed top-0 left-0 z-30
 			bg-slate-100 shadow
 		"
 		:class="[
@@ -12,20 +18,26 @@
 				? 'translate-x-0'
 				: '-translate-x-full'
 		]">
-		
+
 		<router-link
-			class="block flex items-center font-bold text-lg tracking-widest h-16 px-4"
 			:to="{
 				name: 'index',
-			}">
-			<img
-				class="w-8 h-8 mr-4"
-				src="/logo.png">
-			广播云
+			}"
+			custom
+			v-slot="{ href, navigate }">
+			<a
+				class="block flex items-center font-bold text-lg tracking-widest h-16 px-4"
+				:href="href"
+				@click.prevent="nav(navigate)">
+				<img
+					class="w-8 h-8 mr-4"
+					src="/logo.png">
+				广播云
+			</a>
 		</router-link>
 
 		<nav
-			class="h-[calc(100vh-theme('space.28'))] overflow-y-auto p-4">
+			class="h-[calc(100vh-theme('space.28'))] overflow-y-auto px-4 py-2">
 
 			<router-link
 				:to="{
@@ -34,14 +46,14 @@
 				custom
 				v-slot="{ isActive, href, navigate }">
 				<a
-					class="block p-3 mb-2 border-l-4"
+					class="block p-3 mb-2 rounded"
 					:href="href"
 					:class="[
 						isActive
-							? 'bg-slate-200 text-slate-900 border-slate-500 rounded-r'
-							: 'bg-slate-100 hover:bg-slate-200 text-slate-700 border-transparent rounded'
+							? 'bg-slate-200 text-slate-900'
+							: 'bg-slate-100 hover:bg-slate-200 text-slate-700'
 					]"
-					@click="navigate">
+					@click.prevent="nav(navigate)">
 					<i
 						class="mdi mdi-store mr-2"></i>
 					门店管理
@@ -56,6 +68,19 @@
 		</footer>
 
 	</aside>
+
+
+	<div
+		v-if="activeSidebar"
+		@click="activeSidebar = false"
+		aria-label="隐藏侧边栏"
+		class="
+			cursor-pointer
+			block sm:block md:block lg:hidden
+			backdrop-blur bg-slate-900/10
+			fixed top-0 left-0 z-10
+			w-screen h-screen
+		"/>
 
 
 	<main
@@ -98,9 +123,12 @@
 			
 		</header>
 
-		{{ activeSidebar }}
+		<div
+			class="h-[calc(100vh-theme('space.16'))] overflow-y-auto px-4">
+			<router-view/>
+		</div>
+		
 
-		<router-view/>
 	</main>
 
 </template>
@@ -115,12 +143,10 @@ import { useAuth } from '~/store/company/auth.js';
 import resolveConfig from 'tailwindcss/resolveConfig'
 
 
-const fullConfig = resolveConfig({});
-
-console.log(fullConfig)
+const { theme } = resolveConfig({});
 
 const getCurrentBreakpoints = () => {
-    return Object.keys(fullConfig.theme.screens).find((key) => window.innerWidth > theme.screens[key]);
+    return Object.keys(theme.screens).find(key => parseInt(theme.screens[key].replace('px', '')) > window.innerWidth);
 }
 
 export default {
@@ -140,7 +166,14 @@ export default {
 	},
 
 	mounted() {
-		this.activeSidebar = getCurrentBreakpoints() === 'lg';
+		this.activeSidebar = !['xs', 'sm', 'md'].includes(getCurrentBreakpoints());
+	},
+
+	methods: {
+		nav(navigate) {
+			this.activeSidebar = !['xs', 'sm', 'md'].includes(getCurrentBreakpoints());
+			navigate();
+		}
 	}
 
 }

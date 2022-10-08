@@ -1,9 +1,9 @@
 <template>
 	<header
-		class="container mx-auto py-4 flex justify-between items-center">
+		class="w-[1280px] mx-auto py-4 flex justify-between items-center">
 		
 		<router-link
-			class="flex items-center"
+			class="flex items-center mx-4"
 			:to="{
 				name: 'index'
 			}">
@@ -18,7 +18,7 @@
 		</router-link>
 
 		<nav
-			class="flex items-center -mx-4">
+			class="flex items-center mx-4">
 
 			<router-link
 				class="text-slate-700 mx-4"

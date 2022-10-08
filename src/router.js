@@ -65,6 +65,11 @@ routes['company'] = [
 				path: 'stores',
 				name: 'stores',
 				component: () => import('~/pages/company/stores/index.vue'),
+			},
+			{
+				path: 'stores/create',
+				name: 'stores/create',
+				component: () => import('~/pages/company/stores/create.vue'),
 			}
 		]
 	},
