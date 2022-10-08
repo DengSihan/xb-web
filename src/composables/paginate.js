@@ -1,4 +1,4 @@
-import { defineAsyncComponent, ref, watch, onMounted } from 'vue';
+import { defineAsyncComponent, ref, watch, onBeforeMount, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import axios from '~/plugins/axios.js';
 
@@ -8,24 +8,33 @@ export const usePaginate = api => {
 		import('~/components/paginator.vue')
 	);
 
-	const { query } = useRoute();
+	const route = useRoute();
 
-	let data = ref({}),
+	let query = computed(() => route.query),
+		data = ref({}),
 		loading = ref(false);
 		
 	const refreshData = () => {
 		loading.value = true;
 		axios
-			.get(api, query)
+			.get(api, {params: query.value})
 			.then(({ data:response }) => {
 				data.value = response;
+				document.querySelector('#dashboard-content')?.scrollTo({ top:0 });
 			})
-			.finally(() => loading.value = false);
+			.finally(() => {
+				loading.value = false
+			});
 	};
 
-	watch(() => query, () => refreshData());
+	watch(
+		() => query.value,
+		() => {
+			refreshData();
+		}
+	);
 
-	onMounted(() => {
+	onBeforeMount(() => {
 		refreshData();
 	});
 

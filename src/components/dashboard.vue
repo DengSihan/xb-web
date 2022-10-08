@@ -53,7 +53,8 @@
 							? 'bg-slate-200 text-slate-900'
 							: 'bg-slate-100 hover:bg-slate-200 text-slate-700'
 					]"
-					@click.prevent="nav(navigate)">
+					@click.prevent="nav(navigate)"
+					v-wave>
 					<i
 						class="mdi mdi-store mr-2"></i>
 					门店管理
@@ -124,6 +125,7 @@
 		</header>
 
 		<div
+			id="dashboard-content"
 			class="h-[calc(100vh-theme('space.16'))] overflow-y-auto px-4">
 			<router-view/>
 		</div>

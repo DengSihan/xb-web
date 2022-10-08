@@ -7,7 +7,7 @@
 	}
 
 	&.page-index[disabled="true"] {
-		@apply bg-blue-500 text-white;
+		@apply bg-teal-600 text-white;
 	}
 }
 </style>
@@ -35,17 +35,35 @@
 					class="mdi mdi-chevron-left text-2xl leading-10"></i>
 			</router-link>
 
-			<router-link
-				class="page-index"
-				v-for="page in pagesNeedToBeDisplay"
-				:to="getCurrentRouteWithoutPageQuery(page)"
-				:style="{
-					'font-size': `${Math.pow(2, (-1 * page.toString().length) + 1) * 100}%`
-				}"
-				:disabled="page === currentPage"
-				v-wave="page !== currentPage">
-				{{ page }}	
-			</router-link>
+			<template
+				v-for="page in pagesNeedToBeDisplay">
+				<span
+					v-if="
+						page === (paginate.last_page - 2)
+						&& currentPage < (paginate.last_page - 4)"
+					class="mx-1">
+					<i
+						class="mdi mdi-dots-horizontal"></i>
+				</span>
+				<router-link
+					class="page-index"
+					:to="getCurrentRouteWithoutPageQuery(page)"
+					:style="{
+						'font-size': `${Math.pow(1.1, (-1 * page.toString().length) + 1) * 100}%`
+					}"
+					:disabled="page === currentPage"
+					v-wave="page !== currentPage">
+					{{ page }}	
+				</router-link>
+				<span
+					v-if="
+						page === 3
+						&& currentPage > 5"
+					class="mx-1">
+					<i
+						class="mdi mdi-dots-horizontal"></i>
+				</span>
+			</template>
 			
 			<router-link
 				:to="getCurrentRouteWithoutPageQuery(nextPage)"

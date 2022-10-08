@@ -6,7 +6,7 @@
 	@apply w-full table relative overflow-hidden z-[1] border-y;
 
 	td, th {
-		@apply relative outline-none table-cell p-3 text-left;
+		@apply relative outline-none p-3 text-left;
 	}
 
 	tr{
@@ -14,7 +14,7 @@
 	}
 
 	tbody tr:hover {
-		@apply bg-slate-200/25;
+		@apply bg-slate-300/25;
 	}
 
 	td:hover::after,
@@ -27,6 +27,10 @@
 
 	td:hover::after,
 	th:hover::after {
-  		@apply bg-slate-200/25;
+  		@apply bg-slate-300/25;
+	}
+
+	td:hover {
+		@apply outline-2 outline-offset-[-2px] outline-slate-300 outline-dashed rounded;
 	}
 }
