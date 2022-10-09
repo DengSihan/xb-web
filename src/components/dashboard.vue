@@ -11,7 +11,7 @@
 			w-[60vw] sm:w-[60wv] md:w-[max(40vw,300px)] lg:w-[260px]
 			h-screen
 			fixed top-0 left-0 z-30
-			bg-slate-100 shadow
+			bg-slate-100
 		"
 		:class="[
 			activeSidebar
@@ -44,12 +44,12 @@
 					name: 'stores'
 				}"
 				custom
-				v-slot="{ isActive, href, navigate }">
+				v-slot="{ isActive, href, navigate, route }">
 				<a
 					class="block p-3 mb-2 rounded"
 					:href="href"
 					:class="[
-						isActive
+						(isActive || $route.path.startsWith(route.fullPath) )
 							? 'bg-slate-200 text-slate-900'
 							: 'bg-slate-100 hover:bg-slate-200 text-slate-700'
 					]"

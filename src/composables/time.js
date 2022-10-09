@@ -25,16 +25,26 @@ export const useTime = () => {
 		return `${patch(hours)}:${patch(minutes)}`;
 	}
 
+	const parsePromoteTime = time => {
+		let [hours, minutes] = time.split(':');
+		hours = parseInt(hours);
+		minutes = parseInt(minutes);
+		return hours * 60*60 + minutes * 60;
+	}
+
 	const fromNow = timestamp => {
-		return  dayjs(timestamp).locale('zh-cn').fromNow();
+		return dayjs(timestamp).locale('zh-cn').fromNow();
 	}
 
 	const formatTimestamp = timestamp => {
-		return dayjs(timestamp).locale('zh-cn').format('YYYY-MM-DD HH:mm:ss');
+		return timestamp
+			? dayjs(timestamp).locale('zh-cn').format('YYYY-MM-DD HH:mm:ss')
+			: null;
 	};
 
 	return {
 		formatPromoteTime,
+		parsePromoteTime,
 		fromNow,
 		formatTimestamp,
 	};

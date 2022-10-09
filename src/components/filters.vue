@@ -132,7 +132,7 @@ export default {
 				}
 			};
 
-			if (this.$route.query[key] !== value) {
+			if (route.query[key] !== value) {
 				delete route.query.page;
 			}
 

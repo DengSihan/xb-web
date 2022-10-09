@@ -1,5 +1,5 @@
 <template>
-	playlist
+	data
 </template>
 
 <script>

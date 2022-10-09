@@ -1,5 +1,5 @@
 <template>
-	playlist
+	edit
 </template>
 
 <script>

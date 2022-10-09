@@ -67,6 +67,36 @@ routes['company'] = [
 				component: () => import('~/pages/company/stores/index.vue'),
 			},
 			{
+				path: 'stores/:storeId',
+				component: () => import('~/pages/company/stores/show.vue'),
+				props: true,
+				children: [
+					{
+						path: '',
+						name: 'stores/show',
+						component: () => import('~/pages/company/stores/show/index.vue'),
+					},
+					{
+						path: 'playlists',
+						name: 'stores/show/playlists',
+						component: () => import('~/pages/company/stores/show/playlists.vue'),
+						props: true,
+					},
+					{
+						path: 'data',
+						name: 'stores/show/data',
+						component: () => import('~/pages/company/stores/show/data.vue'),
+						props: true,
+					},
+					{
+						path: 'edit',
+						name: 'stores/show/edit',
+						component: () => import('~/pages/company/stores/show/edit.vue'),
+						props: true,
+					}
+				]
+			},
+			{
 				path: 'stores/create',
 				name: 'stores/create',
 				component: () => import('~/pages/company/stores/create.vue'),
