@@ -48,6 +48,9 @@ const form = ref({
 </script>
 
 <script>
+
+import { pick } from 'lodash';
+
 export default {
 
 	inheritAttrs: false,
@@ -97,7 +100,7 @@ export default {
 							value: 'created_at_asc',
 						},
 						{
-							label: '最进更新',
+							label: '最近更新',
 							value: 'updated_at_desc',
 						},
 						{
@@ -126,19 +129,28 @@ export default {
 		getOptionRoute(key, value) {
 
 			let route = {
-				...this.$route,
+				...pick(this.$route, ['name', 'params']),
 				query: {
-					...this.$route.query ?? {}, 
+					...this.$route.query, 
 				}
 			};
 
-			if (route.query[key] !== value) {
+			console.log(route)
+
+			if (
+				!(key in route.query)
+				|| route.query[key] !== value
+			) {
 				delete route.query.page;
 			}
+
+			console.log(route)
 
 			value
 				? route.query[key] = value
 				: delete route.query[key];
+
+			console.log(route)
 
 			return route;
 		}

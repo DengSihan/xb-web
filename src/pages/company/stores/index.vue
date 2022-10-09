@@ -1,4 +1,16 @@
 <template>
+	<nav
+		class="my-4 text-sm">
+		门店管理
+		<i
+			class="mdi mdi-chevron-right mx-2"></i>
+		<router-link
+			:to="{
+				name: 'stores'
+			}">
+			门店列表
+		</router-link>
+	</nav>
 	<filters
 		searchLabel="编号/名称"/>
 	<table

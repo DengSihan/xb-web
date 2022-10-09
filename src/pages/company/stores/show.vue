@@ -1,6 +1,31 @@
 <template>
+
+	<nav
+		class="my-4 text-sm">
+		门店管理
+		<i
+			class="mdi mdi-chevron-right mx-2"></i>
+		<router-link
+			:to="{
+				name: 'stores',
+			}">
+			门店列表
+		</router-link>
+		<i
+			class="mdi mdi-chevron-right mx-2"></i>
+		<router-link
+			:to="{
+				name: 'stores/show',
+				params: {
+					storeId,
+				}
+			}">
+			门店详情
+		</router-link>
+	</nav>
+
 	<h1
-		class="text-2xl font-bold mb-4">
+		class="text-2xl font-bold my-4">
 		{{ store.name }}
 	</h1>
 
@@ -57,14 +82,14 @@ import axios from '~/plugins/axios.js';
 const Tabs = defineAsyncComponent(() => import('~/components/tabs.vue'));''
 
 let store = ref({}),
-	props = defineProps({
+	{ storeId } = defineProps({
 		storeId: {
 			required: true,
 		}
 	});
 
 onBeforeMount(async () => {
-	let { data } = await axios.get(`/stores/${props.storeId}`);
+	let { data } = await axios.get(`/stores/${storeId}`);
 	store.value = data;
 });
 </script>

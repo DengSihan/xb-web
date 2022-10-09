@@ -6,6 +6,18 @@
 			class="-mx-2 flex">
 			<span
 				class="mx-2 w-[8rem]">
+				门店 ID
+			</span>
+			<span
+				class="font-mono mx-2">
+				{{ store.id }}
+			</span>
+		</p>
+
+		<p
+			class="-mx-2 flex">
+			<span
+				class="mx-2 w-[8rem]">
 				门店编号
 			</span>
 			<span

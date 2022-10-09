@@ -100,12 +100,31 @@ routes['company'] = [
 				path: 'stores/create',
 				name: 'stores/create',
 				component: () => import('~/pages/company/stores/create.vue'),
+			},
+			{
+				path: 'playlists',
+				name: 'playlists',
+				component: () => import('~/pages/company/playlists/index.vue'),
 			}
 		]
 	},
-
-
 ];
+
+Object.keys(routes).forEach(key => {
+	routes[key] = [
+		...routes[key],
+		{
+			path: '/private-policy',
+			name: 'private-policy',
+			component: () => import('~/pages/private-policy.vue')
+		},
+		{
+			path: '/apps',
+			name: 'apps',
+			component: () => import('~/pages/apps.vue')
+		}
+	];
+});
 
 const router = createRouter({
 	history: createWebHistory(),
