@@ -26,7 +26,7 @@
 			custom
 			v-slot="{ href, navigate }">
 			<a
-				class="block flex items-center font-bold text-lg tracking-widest h-16 px-4"
+				class="block flex items-center font-bold text-lg tracking-widest h-16 px-4 border-b"
 				:href="href"
 				@click.prevent="nav(navigate)">
 				<img
@@ -37,7 +37,7 @@
 		</router-link>
 
 		<nav
-			class="h-[calc(100vh-theme('space.28'))] overflow-y-auto px-4 py-2">
+			class="h-[calc(100vh-theme('space.28'))] overflow-y-auto p-4">
 
 			<router-link
 				:to="{

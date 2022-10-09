@@ -8,6 +8,10 @@ export const usePaginate = api => {
 		import('~/components/paginator.vue')
 	);
 
+	const Filters = defineAsyncComponent(() => 
+		import('~/components/filters.vue')
+	);
+
 	const route = useRoute();
 
 	let query = computed(() => route.query),
@@ -27,6 +31,16 @@ export const usePaginate = api => {
 			});
 	};
 
+	const highlight = raw => {
+		let { keyword = null } = route.query; 
+		return keyword
+			? (raw).toString().replace(
+					new RegExp(keyword, 'g'),
+					`<span class="bg-yellow-300 text-slate-900 rounded shadow-sm font-bold">${keyword}</span>`
+				)
+			: raw;
+	}
+
 	watch(
 		() => query.value,
 		() => {
@@ -40,8 +54,10 @@ export const usePaginate = api => {
 
 	return {
 		Paginator,
+		Filters,
 		data,
 		loading,
 		refreshData,
+		highlight,
 	};
 };

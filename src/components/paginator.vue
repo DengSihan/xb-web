@@ -7,7 +7,7 @@
 	}
 
 	&.page-index[disabled="true"] {
-		@apply bg-teal-600 text-white;
+		@apply bg-blue-600 text-white;
 	}
 }
 </style>

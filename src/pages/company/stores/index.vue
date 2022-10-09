@@ -1,6 +1,8 @@
 <template>
+	<filters
+		searchLabel="编号/名称"/>
 	<table
-		class="xb-table mb-6">
+		class="xb-table my-4">
 		<thead>
 			<tr>
 				<th>
@@ -10,18 +12,33 @@
 					名称
 				</th>
 				<th>
+					营业时间
+				</th>
+				<th>
+					创建时间
+				</th>
+				<th>
 					操作
 				</th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr
-				v-for="{code, name} in data.data">
+				v-for="{code, name, promote_end_at, promote_start_at, created_at} in data.data">
+				<td
+					class="font-mono"
+					v-html="highlight(code)"/>
+				<td
+					v-html="highlight(name)"/>
 				<td>
-					{{ code }}
+					{{ formatPromoteTime(promote_start_at) }} - {{ formatPromoteTime(promote_end_at) }}
 				</td>
 				<td>
-					{{ name }}
+					<time
+						:datetime="created_at"
+						:title="fromNow(created_at)">
+						{{ formatTimestamp(created_at) }}
+					</time>
 				</td>
 				<td>
 					详情
@@ -30,17 +47,26 @@
 		</tbody>
 	</table>
 	<paginator
-		class="my-6"
+		class="my-4"
 		:paginate="data"/>
 </template>
 
 <script setup>
 import { usePaginate } from '~/composables/paginate.js';
+import { useTime } from '~/composables/time.js';
 
 const {
 	data,
 	loading,
-	Paginator
+	Paginator,
+	Filters,
+	highlight,
 } = usePaginate('/stores');
+
+const {
+	formatPromoteTime,
+	fromNow,
+	formatTimestamp,
+} = useTime();
 
 </script>
