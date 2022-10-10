@@ -76,7 +76,7 @@
 </template>
 
 <script setup>
-import { defineAsyncComponent, ref, onBeforeMount, defineProps } from 'vue';
+import { defineAsyncComponent, ref, onBeforeMount } from 'vue';
 import axios from '~/plugins/axios.js';
 
 const Tabs = defineAsyncComponent(() => import('~/components/tabs.vue'));''

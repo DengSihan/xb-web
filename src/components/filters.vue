@@ -20,6 +20,7 @@
 				v-html="label"/>
 			<router-link
 				v-for="{label, value} in options"
+				:key="`${key}-${value}`"
 				:to="getOptionRoute(key, value)"
 				custom
 				v-slot="{ route, href, navigate }">
@@ -49,7 +50,7 @@ const form = ref({
 
 <script>
 
-import { pick } from 'lodash';
+import { pick, cloneDeep } from 'lodash';
 
 export default {
 
@@ -128,31 +129,21 @@ export default {
 
 		getOptionRoute(key, value) {
 
-			let route = {
-				...pick(this.$route, ['name', 'params']),
-				query: {
-					...this.$route.query, 
-				}
-			};
+			let query = cloneDeep(this.$route.query);
 
-			console.log(route)
-
-			if (
-				!(key in route.query)
-				|| route.query[key] !== value
-			) {
-				delete route.query.page;
+			if (value !== (query[key] ?? '')) {
+				delete query.page;
+				query[key] = value;
+			}
+			
+			if (!value) {
+				delete query[key];
 			}
 
-			console.log(route)
-
-			value
-				? route.query[key] = value
-				: delete route.query[key];
-
-			console.log(route)
-
-			return route;
+			return {
+				...pick(this.$route, ['name', 'params']),
+				query,
+			};
 		}
 	}
 }
