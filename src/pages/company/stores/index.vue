@@ -24,9 +24,6 @@
 					名称
 				</th>
 				<th>
-					地点
-				</th>
-				<th>
 					营业时间
 				</th>
 				<th>
@@ -39,15 +36,13 @@
 		</thead>
 		<tbody>
 			<tr
-				v-for="{id, code, name, location, promote_end_at, promote_start_at, created_at} in data.data">
+				v-if="data.data.length"
+				v-for="{id, code, name, promote_end_at, promote_start_at, created_at} in data.data">
 				<td
 					class="font-mono"
 					v-html="highlight(code)"/>
 				<td
 					v-html="highlight(name)"/>
-				<td>
-					{{ location }}
-				</td>
 				<td>
 					{{ formatPromoteTime(promote_start_at) }} - {{ formatPromoteTime(promote_end_at) }}
 				</td>
@@ -68,6 +63,16 @@
 						}">
 						详情
 					</router-link>
+				</td>
+			</tr>
+			<tr
+				v-else>
+				<td
+					colspan="5">
+					<h4
+						class="py-4 text-slate-400">
+						没有结果
+					</h4>
 				</td>
 			</tr>
 		</tbody>

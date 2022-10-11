@@ -71,6 +71,7 @@
 		]"/>
 
 	<router-view
+		v-if="store.id"
 		v-model:store="store"/>
 
 </template>

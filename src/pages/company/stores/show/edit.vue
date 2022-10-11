@@ -10,8 +10,8 @@
 				基础信息
 			</h2>
 			<form
-				class="p-4 bg-slate-50 rounded w-[calc(100%-theme('space.32'))] text-right"
-				@submit.prevent="">
+				class="p-4 bg-slate-50 rounded w-[calc(100%-theme('space.32'))]"
+				@submit.prevent="updateBaseInfo">
 
 				<xb-input
 					class="my-4"
@@ -45,12 +45,11 @@
 					v-model:errors="baseInfoErrors.promote_end_at"
 					required/>
 
-
-					<xb-button>
-						更新信息
-					</xb-button>
-
-
+				<xb-button
+					class="ml-auto block">
+					更新信息
+				</xb-button>
+				
 			</form>
 		</li>
 
@@ -103,6 +102,10 @@
 import { onBeforeMount } from 'vue';
 import { pick } from 'lodash';
 import { useForm } from '~/composables/form.js';
+import { notify } from '@kyvg/vue3-notification';
+import axios from '~/plugins/axios.js';
+
+const emit = defineEmits(['update:store']);
 
 const { store } = defineProps(['store']);
 
@@ -116,6 +119,9 @@ const baseForm = {
 let {
 	form: baseInfo,
 	errors: baseInfoErrors,
+	loading: loadingBaseInfo,
+	handleFormErrors: handleBaseInfoErrors,
+	clearFormErrors: clearBaseInfoErrors,
 } = useForm(baseForm);
 
 onBeforeMount(async () => {
@@ -125,6 +131,42 @@ onBeforeMount(async () => {
 let deleteConfirmForm = {
 	value: '',
 	errors: [],
+}
+
+const updateBaseInfo = () => {
+
+	notify({
+		// (optional)
+	    // Title (will be wrapped in div.notification-title)
+	    title: 'This is the <em>title</em>',
+
+	    // Content (will be wrapped in div.notification-content)
+	    text: 'This is some <b>content</b>',
+
+	    // (optional)
+	    // Class that will be assigned to the notification
+	    type: 'warn',
+
+	    // (optional)
+	    // Data object that can be used in your template
+	    data: {}
+	});
+
+	// loadingBaseInfo.value = true;
+	// axios.put(
+	// 		`/stores/${store.id}`,
+	// 		baseInfo.value,
+	// 	)
+	// 	.then(({ data }) => {
+	// 		clearBaseInfoErrors();
+	// 		emit('update:store', data);
+	// 	})
+	// 	.catch(errors => {
+	// 		handleBaseInfoErrors(errors);
+	// 	})
+	// 	.finally(() => {
+	// 		loadingBaseInfo.value = false;
+	// 	});
 }
 
 </script>
