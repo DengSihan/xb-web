@@ -36,15 +36,15 @@
 		</thead>
 		<tbody>
 			<tr
-				v-if="data.data.length"
-				v-for="{id, code, name, promote_end_at, promote_start_at, created_at} in data.data">
+				v-if="data.data?.length"
+				v-for="{id, code, name, close_at, open_at, created_at} in data.data">
 				<td
 					class="font-mono"
 					v-html="highlight(code)"/>
 				<td
 					v-html="highlight(name)"/>
 				<td>
-					{{ formatPromoteTime(promote_start_at) }} - {{ formatPromoteTime(promote_end_at) }}
+					{{ open_at }} - {{ close_at }}
 				</td>
 				<td>
 					<time
@@ -55,6 +55,7 @@
 				</td>
 				<td>
 					<router-link
+						class="xb-link"
 						:to="{
 							name: 'stores/show',
 							params: {
@@ -95,7 +96,6 @@ const {
 } = usePaginate('/stores');
 
 const {
-	formatPromoteTime,
 	fromNow,
 	formatTimestamp,
 } = useTime();

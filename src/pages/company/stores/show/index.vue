@@ -46,7 +46,7 @@
 			</span>
 			<span
 				class="font-mono mx-2">
-				{{ formatPromoteTime(store.promote_start_at) }}
+				{{ store.open_at }}
 			</span>
 		</p>
 
@@ -58,7 +58,7 @@
 			</span>
 			<span
 				class="font-mono mx-2">
-				{{ formatPromoteTime(store.promote_end_at) }}
+				{{ store.close_at }}
 			</span>
 		</p>
 
@@ -120,12 +120,17 @@
 <script setup>
 import { useTime } from '~/composables/time.js';
 
+let { store } = defineProps({
+	store: {
+		required: true,
+	}
+});
+
 let {
-	formatPromoteTime,
-	parsePromoteTime,
 	formatTimestamp,
 	fromNow,
 } = useTime();
+
 </script>
 
 <script>
@@ -133,10 +138,5 @@ export default {
 
 	inheritAttrs: false,
 
-	props: {
-		store: {
-			required: true,
-		},
-	}
 }
 </script>
