@@ -1,6 +1,6 @@
 <template>
 	<nav
-		class="my-4 text-sm">
+		class="my-4 text-sm relative">
 		门店管理
 		<i
 			class="mdi mdi-chevron-right mx-2"></i>
@@ -9,6 +9,14 @@
 				name: 'stores'
 			}">
 			门店列表
+		</router-link>
+
+		<router-link
+			class="absolute right-0"
+			:to="{
+				name: 'stores/create'
+			}">
+			新增门店
 		</router-link>
 	</nav>
 	<filters
