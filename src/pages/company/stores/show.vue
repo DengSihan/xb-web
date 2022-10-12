@@ -94,3 +94,9 @@ onBeforeMount(async () => {
 	store.value = data;
 });
 </script>
+
+<script>
+export default {
+	inheritAttrs: false,
+}
+</script>

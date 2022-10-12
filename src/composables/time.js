@@ -10,27 +10,23 @@ dayjs.extend(duration);
 dayjs.extend(relativeTime);
 dayjs.extend(localizedFormat);
 
-// const patch = str => {
-// 	str = str.toString();
-// 	return str.length === 2
-// 		? str
-// 		: `0${str}`;
-// }
+const patch = str => {
+	str = str.toString();
+	return str.length === 2
+		? str
+		: `0${str}`;
+}
 
 export const useTime = () => {
 
-	// const formatPromoteTime = raw => {
-	// 	let hours = Math.trunc(raw / (60*60)),
-	// 		minutes = (raw % (60*60)) / 60;
-	// 	return `${patch(hours)}:${patch(minutes)}`;
-	// }
+	const formatDuration = s => {
 
-	// const parsePromoteTime = time => {
-	// 	let [hours, minutes] = time.split(':');
-	// 	hours = parseInt(hours);
-	// 	minutes = parseInt(minutes);
-	// 	return hours * 60*60 + minutes * 60;
-	// }
+		let hours = Math.floor(((s % 31536000) % 86400) / 3600),
+			minutes = Math.floor((((s % 31536000) % 86400) % 3600) / 60),
+			seconds = (((s % 31536000) % 86400) % 3600) % 60;
+
+		return `${patch(hours)}:${patch(minutes)}:${patch(seconds)}`;
+	}
 
 	const fromNow = timestamp => {
 		return dayjs(timestamp).locale('zh-cn').fromNow();
@@ -43,8 +39,7 @@ export const useTime = () => {
 	};
 
 	return {
-		// formatPromoteTime,
-		// parsePromoteTime,
+		formatDuration,
 		fromNow,
 		formatTimestamp,
 	};

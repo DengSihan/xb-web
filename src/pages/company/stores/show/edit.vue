@@ -11,22 +11,22 @@
 			</h2>
 			<form
 				class="p-4 bg-slate-50 rounded w-[calc(100%-theme('space.32'))]"
-				@submit.prevent="updateBaseInfo">
+				@submit.prevent="update">
 
 				<xb-input
-					class="my-4"
+					class="mb-4"
 					name="code"
 					placeholder="门店编号"
-					v-model="baseInfo.code"
-					v-model:errors="baseInfoErrors.code"
+					v-model="form.code"
+					v-model:errors="errors.code"
 					required/>
 
 				<xb-input
 					class="my-4"
 					name="name"
 					placeholder="门店名称"
-					v-model="baseInfo.name"
-					v-model:errors="baseInfoErrors.name"
+					v-model="form.name"
+					v-model:errors="errors.name"
 					required/>
 
 				<xb-input
@@ -34,8 +34,8 @@
 					name="open_at"
 					placeholder="开始营业时间"
 					type="time"
-					v-model="baseInfo.open_at"
-					v-model:errors="baseInfoErrors.open_at"
+					v-model="form.open_at"
+					v-model:errors="errors.open_at"
 					required/>
 
 				<xb-input
@@ -43,12 +43,12 @@
 					name="close_at"
 					placeholder="结束营业时间"
 					type="time"
-					v-model="baseInfo.close_at"
-					v-model:errors="baseInfoErrors.close_at"
+					v-model="form.close_at"
+					v-model:errors="errors.close_at"
 					required/>
 
 				<xb-button
-					:loading="loadingBaseInfo"
+					:loading="loading"
 					class="ml-auto block">
 					更新信息
 				</xb-button>
@@ -66,7 +66,7 @@
 				class="p-4 bg-amber-50 rounded w-[calc(100%-theme('space.32'))]"
 				@submit.prevent="resetPassword">
 				<xb-button
-					:loading="loadingResetPassword"
+					:loading="resetting"
 					class="ml-auto block"
 					scheme="alert">
 					重置密码
@@ -85,15 +85,15 @@
 				@submit.prevent="destroyStore">
 
 				<xb-input
-					class="my-4"
+					class="mb-4"
 					name="delete_confirm"
-					:placeholder="`输入门店编号: ${baseInfo.code} 以确认删除`"
-					v-model="destroyStoreForm.code"
-					v-model:errors="destroyStoreFormErrors.code"
+					:placeholder="`输入门店编号: ${store.code} 以确认删除`"
+					v-model="destroyForm.code"
+					v-model:errors="destroyFormErrors.code"
 					required/>
 
 				<xb-button
-					:loading="loadingDestroyStore"
+					:loading="destroying"
 					class="ml-auto block"
 					scheme="danger">
 					删除门店
@@ -125,25 +125,25 @@ const baseForm = {
 };
 
 let {
-	form: baseInfo,
-	errors: baseInfoErrors,
-	loading: loadingBaseInfo,
-	handleFormErrors: handleBaseInfoErrors,
-	clearFormErrors: clearBaseInfoErrors,
+	form,
+	errors,
+	loading,
+	handleFormErrors,
+	clearFormErrors,
 } = useForm(baseForm);
 
 onBeforeMount(async () => {
-	baseInfo.value = pick(store, Object.keys(baseForm));
+	form.value = pick(store, Object.keys(baseForm));
 });
 
-const updateBaseInfo = () => {
-	loadingBaseInfo.value = true;
+const update = () => {
+	loading.value = true;
 	axios.put(
 			`/stores/${store.id}`,
-			baseInfo.value,
+			form.value,
 		)
 		.then(({ data }) => {
-			clearBaseInfoErrors();
+			clearFormErrors();
 			emit('update:store', data);
 			notify({
 			    title: '更新成功',
@@ -152,17 +152,17 @@ const updateBaseInfo = () => {
 			});
 		})
 		.catch(errors => {
-			handleBaseInfoErrors(errors);
+			handleFormErrors(errors);
 		})
 		.finally(() => {
-			loadingBaseInfo.value = false;
+			loading.value = false;
 		});
 }
 
-let loadingResetPassword = ref(false);
+let resetting = ref(false);
 
 const resetPassword = () => {
-	loadingResetPassword.value = true;
+	resetting.value = true;
 	axios.put(
 			`/stores/${store.id}/password`,
 		)
@@ -174,26 +174,26 @@ const resetPassword = () => {
 			});
 		})
 		.finally(() => {
-			loadingResetPassword.value = false;
+			resetting.value = false;
 		});
 };
 
 let {
-	form: destroyStoreForm,
-	errors: destroyStoreFormErrors,
-	loading: loadingDestroyStore,
-	handleFormErrors: handleDestroyStoreFormErrors,
-	clearFormErrors: clearDestroyStoreFormErrors,
+	form: destroyForm,
+	errors: destroyFormErrors,
+	loading: destroying,
+	handleFormErrors: handleDestroyFormErrors,
+	clearFormErrors: clearDestroyFormErrors,
 } = useForm({code: ''});
 
 const router = useRouter();
 
 const destroyStore = () => {
-	loadingDestroyStore.value = true;
+	destroying.value = true;
 	axios.delete(
 			`/stores/${store.id}`,
 			{
-				data: destroyStoreForm.value,
+				data: destroyForm.value,
 			}
 		)
 		.then(() => {
@@ -209,10 +209,10 @@ const destroyStore = () => {
 				});
 		})
 		.catch(errors => {
-			handleDestroyStoreFormErrors(errors);
+			handleDestroyFormErrors(errors);
 		})
 		.finally(() => {
-			loadingDestroyStore.value = false;
+			destroying.value = false;
 		});
 };
 

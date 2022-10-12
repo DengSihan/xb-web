@@ -61,10 +61,16 @@ routes['company'] = [
 				name: 'index',
 				component: () => import('~/pages/company/index.vue'),
 			},
+
 			{
 				path: 'stores',
 				name: 'stores',
 				component: () => import('~/pages/company/stores/index.vue'),
+			},
+			{
+				path: 'stores/create',
+				name: 'stores/create',
+				component: () => import('~/pages/company/stores/create.vue'),
 			},
 			{
 				path: 'stores/:storeId',
@@ -96,15 +102,44 @@ routes['company'] = [
 					}
 				]
 			},
-			{
-				path: 'stores/create',
-				name: 'stores/create',
-				component: () => import('~/pages/company/stores/create.vue'),
-			},
+			
+
 			{
 				path: 'playlists',
 				name: 'playlists',
 				component: () => import('~/pages/company/playlists/index.vue'),
+			},
+			{
+				path: 'playlists/create',
+				name: 'playlists/create',
+				component: () => import('~/pages/company/playlists/create.vue'),
+			},
+			{
+				path: 'playlists/:playlistId',
+				component: () => import('~/pages/company/playlists/show.vue'),
+				props: true,
+				children: [
+					{
+						path: '',
+						name: 'playlists/show',
+						component: () => import('~/pages/company/playlists/show/index.vue'),
+					},
+					{
+						path: 'audios',
+						name: 'playlists/show/audios',
+						component: () => import('~/pages/company/playlists/show/audios.vue'),
+					},
+					{
+						path: 'stores',
+						name: 'playlists/show/stores',
+						component: () => import('~/pages/company/playlists/show/stores.vue'),
+					},
+					{
+						path: 'edit',
+						name: 'playlists/show/edit',
+						component: () => import('~/pages/company/playlists/show/edit.vue'),
+					},
+				]
 			}
 		]
 	},
