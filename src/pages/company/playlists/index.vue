@@ -46,45 +46,47 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr
-				v-if="data.data?.length"
-				v-for="{id, count, duration, name, created_at, updated_at} in data.data">
-				<td
-					v-html="highlight(name)"/>
-				<td>
-					{{ count }}
-				</td>
-				<td>
-					<code
-						v-html="formatDuration(duration)"/>
-				</td>
-				<td>
-					<time
-						:datetime="created_at"
-						:title="fromNow(created_at)">
-						{{ formatTimestamp(created_at) }}
-					</time>
-				</td>
-				<td>
-					<time
-						:datetime="updated_at"
-						:title="fromNow(updated_at)">
-						{{ formatTimestamp(updated_at) }}
-					</time>
-				</td>
-				<td>
-					<router-link
-						class="xb-link"
-						:to="{
-							name: 'playlists/show',
-							params: {
-								playlistId: id,
-							}
-						}">
-						详情
-					</router-link>
-				</td>
-			</tr>
+			<template
+				v-if="data.data?.length">
+				<tr
+					v-for="{id, count, duration, name, created_at, updated_at} in data.data">
+					<td
+						v-html="highlight(name)"/>
+					<td>
+						{{ count }}
+					</td>
+					<td>
+						<code
+							v-html="formatDuration(duration)"/>
+					</td>
+					<td>
+						<time
+							:datetime="created_at"
+							:title="fromNow(created_at)">
+							{{ formatTimestamp(created_at) }}
+						</time>
+					</td>
+					<td>
+						<time
+							:datetime="updated_at"
+							:title="fromNow(updated_at)">
+							{{ formatTimestamp(updated_at) }}
+						</time>
+					</td>
+					<td>
+						<router-link
+							class="xb-link"
+							:to="{
+								name: 'playlists/show',
+								params: {
+									playlistId: id,
+								}
+							}">
+							详情
+						</router-link>
+					</td>
+				</tr>
+			</template>
 			<tr
 				v-else>
 				<td

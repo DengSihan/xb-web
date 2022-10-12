@@ -1,9 +1,3 @@
-<style lang="scss">
-	#app {
-		@apply relative h-screen w-screen;
-	}
-</style>
-
 <template>
 
 	<aside
@@ -83,6 +77,28 @@
 				</a>
 			</router-link>
 
+			<router-link
+				:to="{
+					name: 'tokens'
+				}"
+				custom
+				v-slot="{ isActive, href, navigate, route }">
+				<a
+					class="block p-3 mb-2 rounded"
+					:href="href"
+					:class="[
+						(isActive || $route.path.startsWith(route.fullPath) )
+							? 'bg-slate-200 text-slate-900'
+							: 'bg-slate-100 hover:bg-slate-200 text-slate-700'
+					]"
+					@click.prevent="nav(navigate)"
+					v-wave>
+					<i
+						class="mdi mdi-fingerprint mr-2"></i>
+					授权管理
+				</a>
+			</router-link>
+
 		</nav>
 
 		<footer
@@ -152,7 +168,7 @@
 			<router-view/>
 
 			<footer
-				class="mt-4 border-t pt-4 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+				class="mt-4 border-t-[3px] border-slate-100 pt-4 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
 
 				<section>
 					<h3

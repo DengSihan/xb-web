@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useRouter } from 'vue-router';
+import router from '~/router.js';
 import { useAuth } from '~/plugins/mode.js';
 
 axios.defaults.baseURL = `/api`;
@@ -34,7 +34,7 @@ axios.interceptors.response.use(
 		if (response.status === 401) {
 			useAuth().clearAuth();
 
-			let router = useRouter();
+
 			router.push({
 				name: 'login'
 			});

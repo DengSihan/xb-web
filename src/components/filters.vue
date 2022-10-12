@@ -46,6 +46,52 @@ const form = ref({
 	keyword: useRoute().query.keyword ?? '' 
 });
 
+let { searchLabel, optionsables, orderables } = defineProps({
+	searchLabel: {
+		required: false,
+		type: String,
+		default: '关键词'
+	},
+	optionsables: {
+		required: false,
+		type: Array,
+		default: () => [],
+		validator: columns => {
+			columns.forEach(order => {
+				if (
+					!('label' in optionsable) ||
+					!('options' in optionsable) ||
+					!('key' in optionsable)
+				) return false;
+			});
+
+			return true;
+		}
+	},
+	orderables: {
+		required: false,
+		type: Array,
+		default: () => [
+			{
+				label: '最新创建',
+				value: 'created_at_desc',
+			},
+			{
+				label: '最早创建',
+				value: 'created_at_asc',
+			},
+			{
+				label: '最近更新',
+				value: 'updated_at_desc',
+			},
+			{
+				label: '最早更新',
+				value: 'updated_at_asc',
+			},
+		]
+	}
+});
+
 </script>
 
 <script>
@@ -55,30 +101,6 @@ import { pick, cloneDeep } from 'lodash';
 export default {
 
 	inheritAttrs: false,
-
-	props: {
-		searchLabel: {
-			required: false,
-			type: String,
-			default: '关键词'
-		},
-		optionsables: {
-			required: false,
-			type: Array,
-			default: () => [],
-			validator: columns => {
-				columns.forEach(order => {
-					if (
-						!('label' in optionsable) ||
-						!('options' in optionsable) ||
-						!('key' in optionsable)
-					) return false;
-				});
-
-				return true;
-			}
-		},
-	},
 
 	computed: {
 		computedOptionsables() {
@@ -92,29 +114,22 @@ export default {
 							label: '默认排序',
 							value: '',
 						},
-						{
-							label: '最新创建',
-							value: 'created_at_desc',
-						},
-						{
-							label: '最早创建',
-							value: 'created_at_asc',
-						},
-						{
-							label: '最近更新',
-							value: 'updated_at_desc',
-						},
-						{
-							label: '最早更新',
-							value: 'updated_at_asc',
-						},
-					]
+						...this.orderables
+					],
 				}
 			];
 		},
 		currentFullPath() {
 			return this.$route.fullPath;
 		},
+	},
+
+	watch: {
+		'$route.query.keyword'(value) {
+			if (this.form.keyword !== value) {
+				this.form.keyword = value;
+			}
+		}
 	},
 
 	methods: {

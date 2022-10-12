@@ -43,37 +43,39 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr
-				v-if="data.data?.length"
-				v-for="{id, code, name, close_at, open_at, created_at} in data.data">
-				<td
-					class="font-mono"
-					v-html="highlight(code)"/>
-				<td
-					v-html="highlight(name)"/>
-				<td>
-					{{ open_at }} - {{ close_at }}
-				</td>
-				<td>
-					<time
-						:datetime="created_at"
-						:title="fromNow(created_at)">
-						{{ formatTimestamp(created_at) }}
-					</time>
-				</td>
-				<td>
-					<router-link
-						class="xb-link"
-						:to="{
-							name: 'stores/show',
-							params: {
-								storeId: id,
-							}
-						}">
-						详情
-					</router-link>
-				</td>
-			</tr>
+			<template
+				v-if="data.data?.length">
+				<tr
+					v-for="{id, code, name, close_at, open_at, created_at} in data.data">
+					<td
+						class="font-mono"
+						v-html="highlight(code)"/>
+					<td
+						v-html="highlight(name)"/>
+					<td>
+						{{ open_at }} - {{ close_at }}
+					</td>
+					<td>
+						<time
+							:datetime="created_at"
+							:title="fromNow(created_at)">
+							{{ formatTimestamp(created_at) }}
+						</time>
+					</td>
+					<td>
+						<router-link
+							class="xb-link"
+							:to="{
+								name: 'stores/show',
+								params: {
+									storeId: id,
+								}
+							}">
+							详情
+						</router-link>
+					</td>
+				</tr>
+			</template>
 			<tr
 				v-else>
 				<td

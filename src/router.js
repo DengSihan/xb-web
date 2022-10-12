@@ -63,6 +63,12 @@ routes['company'] = [
 			},
 
 			{
+				path: 'tokens',
+				name: 'tokens',
+				component: () => import('~/pages/commons/tokens.vue'),
+			},
+
+			{
 				path: 'stores',
 				name: 'stores',
 				component: () => import('~/pages/company/stores/index.vue'),
