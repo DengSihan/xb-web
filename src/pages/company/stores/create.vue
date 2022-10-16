@@ -20,6 +20,11 @@
 		</router-link>
 	</nav>
 
+	<h1
+		class="text-2xl font-bold my-4">
+		新增门店
+	</h1>
+
 	<form
 		@submit.prevent="storeStore">
 		

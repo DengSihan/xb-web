@@ -20,6 +20,11 @@
 		</router-link>
 	</nav>
 
+	<h1
+		class="text-2xl font-bold my-4">
+		新增播放列表
+	</h1>
+
 	<form
 		@submit.prevent="storePlaylist">
 

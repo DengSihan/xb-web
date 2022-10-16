@@ -51,15 +51,6 @@
 				},
 			},
 			{
-				label: `<i class='mdi mdi-chart-bar mr-2'></i>统计信息`,
-				route: {
-					name: 'stores/show/data',
-					params: {
-						storeId,
-					}
-				},
-			},
-			{
 				label: `<i class='mdi mdi-store-edit mr-2'></i>修改门店信息`,
 				route: {
 					name: 'stores/show/edit',

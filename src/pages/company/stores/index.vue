@@ -16,15 +16,20 @@
 			:to="{
 				name: 'stores/create'
 			}">
+			<i
+				class="mdi mdi-plus"></i>
 			新增门店
 		</router-link>
 	</nav>
 	<filters
-		searchLabel="编号/名称"/>
+		searchLabel="ID/编号/名称"/>
 	<table
 		class="xb-table my-4">
 		<thead>
 			<tr>
+				<th>
+					ID
+				</th>
 				<th>
 					编号
 				</th>
@@ -47,6 +52,9 @@
 				v-if="data.data?.length">
 				<tr
 					v-for="{id, code, name, close_at, open_at, created_at} in data.data">
+					<td
+						class="font-mono"
+						v-html="highlight(id)"/>
 					<td
 						class="font-mono"
 						v-html="highlight(code)"/>

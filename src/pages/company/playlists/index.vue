@@ -16,15 +16,20 @@
 			:to="{
 				name: 'playlists/create'
 			}">
+			<i
+				class="mdi mdi-plus"></i>
 			新增播放列表
 		</router-link>
 	</nav>
 	<filters
-		searchLabel="名称"/>
+		searchLabel="ID/名称"/>
 	<table
 		class="xb-table my-4">
 		<thead>
 			<tr>
+				<th>
+					ID
+				</th>
 				<th>
 					名称
 				</th>
@@ -50,6 +55,8 @@
 				v-if="data.data?.length">
 				<tr
 					v-for="{id, count, duration, name, created_at, updated_at} in data.data">
+					<td
+						v-html="highlight(id)"/>
 					<td
 						v-html="highlight(name)"/>
 					<td>

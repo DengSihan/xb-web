@@ -6,7 +6,10 @@ const setObjectAttrValueAsEmptyArray = (obj = {}) => {
 	let result = {};
 
 	Object.keys(obj).forEach(key => {
-		if (typeof obj[key] === 'object') {
+		if (
+			!!obj[key]
+			&& typeof obj[key] === 'object'
+		) {
 			result[key] = setObjectAttrValueAsEmptyArray(obj[key]);
 		}
 		else {

@@ -11,7 +11,9 @@
 			v-model="form.keyword"/>
 	</form>
 	<section
-		class="my-4">
+		:class="{
+			'my-4': computedOptionsables.length
+		}">
 		<nav
 			v-for="{label, key, options} in computedOptionsables"
 			class="flex items-center mb-4 -mx-1">
@@ -89,6 +91,11 @@ let { searchLabel, optionsables, orderables } = defineProps({
 				value: 'updated_at_asc',
 			},
 		]
+	},
+	disabledOrders: {
+		required: false,
+		type: Boolean,
+		default: false,
 	}
 });
 
@@ -104,9 +111,11 @@ export default {
 
 	computed: {
 		computedOptionsables() {
-			return [
-				...this.optionsables,
-				{
+
+			let optionsables = this.optionsables;
+
+			if (!this.disabledOrders) {
+				optionsables.push({
 					label: '排序方式',
 					key: 'order',
 					options: [
@@ -116,8 +125,10 @@ export default {
 						},
 						...this.orderables
 					],
-				}
-			];
+				});
+			}
+
+			return optionsables;
 		},
 		currentFullPath() {
 			return this.$route.fullPath;

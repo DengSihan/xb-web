@@ -12,7 +12,7 @@
 		</router-link>
 	</nav>
 	<filters
-		searchLabel="设备名称/IP"
+		searchLabel="User-Agent/IP"
 		:orderables="[
 			{
 				label: '最新创建',
@@ -36,7 +36,7 @@
 		<thead>
 			<tr>
 				<th>
-					设备名称
+					User-Agent
 				</th>
 				<th>
 					IP
@@ -62,7 +62,7 @@
 					v-for="{id, name, created_at, last_used_at, ip, ip_location} in data.data">
 					<td
 						class="text-xs font-mono"
-						v-html="highlight(name).split(')').join(')<br>')"/>
+						v-html="highlight(name.split(')').join(')<br>'))"/>
 					<td
 						class="text-sm font-mono"
 						v-html="highlight(ip)"/>
@@ -133,12 +133,14 @@ const {
 } = useTime();
 
 const destroy = id => {
-	axios.delete(
-			`/auth/tokens/${id}`,
-		)
-		.then(() => {
-			refreshData();
-		});
+	if (confirm('您确定吊销此授权？')) {
+		axios.delete(
+				`/auth/tokens/${id}`,
+			)
+			.then(() => {
+				refreshData();
+			});
+	}
 }
 
 </script>

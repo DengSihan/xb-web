@@ -95,12 +95,6 @@ routes['company'] = [
 						props: true,
 					},
 					{
-						path: 'data',
-						name: 'stores/show/data',
-						component: () => import('~/pages/company/stores/show/data.vue'),
-						props: true,
-					},
-					{
 						path: 'edit',
 						name: 'stores/show/edit',
 						component: () => import('~/pages/company/stores/show/edit.vue'),
