@@ -34,16 +34,125 @@
 	</tr>
 	
 	<custom-dialog
+		:prevent="loading"
+		:hide-closer="loading"
 		v-model="show">
 		
 		<template
 			#title>
+			<i
+				class="mdi mdi-information-variant mr-2"></i>
 			音频详情
 		</template>
 
-		<section>
-			
-		</section>
+		<ul
+			class="grid grid-cols-1 gap-4">
+			<li
+				class="flex">
+				<strong
+					class="w-[8rem]">
+					ID
+				</strong>
+				<span>
+					{{ audio.id }}
+				</span>
+			</li>
+			<li
+				class="flex">
+				<strong
+					class="w-[8rem]">
+					名称
+				</strong>
+				<span>
+					{{ audio.name }}
+				</span>
+			</li>
+			<li
+				class="flex">
+				<strong
+					class="w-[8rem]">
+					类型
+				</strong>
+				<span>
+					{{ audio.category }}
+				</span>
+			</li>
+			<li
+				class="flex">
+				<strong
+					class="w-[8rem]">
+					时长
+				</strong>
+				<span>
+					{{ audio.duration }}
+				</span>
+			</li>
+			<li
+				class="flex">
+				<strong
+					class="w-[8rem]">
+					大小
+				</strong>
+				<span>
+					{{ audio.size }}
+				</span>
+			</li>
+			<li
+				v-if="audio.category !== 1"
+				class="flex">
+				<strong
+					class="w-[8rem]">
+					播放次数
+				</strong>
+				<span>
+					{{ audio.view }}
+				</span>
+			</li>
+			<li
+				class="flex">
+				<strong
+					class="w-[8rem]">
+					由文字生成
+				</strong>
+				<span>
+					{{ audio.generate_from_text ? '是' : '否' }}
+				</span>
+			</li>
+			<li
+				v-if="audio.generate_from_text"
+				class="flex">
+				<strong
+					class="w-[8rem]">
+					文字
+				</strong>
+				<span>
+					{{ audio.text }}
+				</span>
+			</li>
+			<li
+				class="flex">
+				<strong
+					class="w-[8rem]">
+					可播放
+				</strong>
+				<span>
+					{{ audio.playable ? '是' : '否' }}
+				</span>
+			</li>
+		</ul>
+
+		<form
+			class="flex items-center justify-between my-4 rounded border-2 border-red-600 bg-red-50 p-2 text-red-600"
+			@submit.prevent="destroyAudio">
+			<p>
+				删除此音频？
+			</p>
+			<xb-button
+				:loading="loading"
+				scheme="danger">
+				确认删除
+			</xb-button>
+		</form>
 
 	</custom-dialog>
 
@@ -67,6 +176,10 @@ const CustomDialog = defineAsyncComponent(
 );
 
 let props = defineProps({
+	playlist: {
+		required: true,
+		type: Object,
+	},
 	audio: {
 		required: true,
 		type: Object,
@@ -89,21 +202,21 @@ let {
 	loading,
 } = useForm();
 
-const destroyPlaylist = () => {
-	// loading.value = true;
-	// axios.delete(
-	// 		`/stores/${props.store.id}/playlists/${props.playlist.id}`,
-	// 	)
-	// 	.then(({ data }) => {
-	// 		show.value = false;
-	// 		emits('destroied');
-	// 	})
-	// 	.catch(errors => {
-	// 		handleFormErrors(errors);
-	// 	})
-	// 	.finally(() => {
-	// 		loading.value = false;
-	// 	});
+const destroyAudio = () => {
+	loading.value = true;
+	axios.delete(
+			`/playlists/${props.playlist.id}/audios/${props.audio.id}`,
+		)
+		.then(({ data }) => {
+			show.value = false;
+			emits('destroied');
+		})
+		.catch(errors => {
+			handleFormErrors(errors);
+		})
+		.finally(() => {
+			loading.value = false;
+		});
 }
 </script>
 

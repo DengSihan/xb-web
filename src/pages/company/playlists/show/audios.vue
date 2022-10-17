@@ -9,10 +9,10 @@
 					ID
 				</th>
 				<th>
-					音频名称
+					名称
 				</th>
 				<th>
-					音频类型
+					类型
 				</th>
 				<th>
 					时长
@@ -36,7 +36,8 @@
 					:key="audio.id"
 					:audio="audio"
 					:playlist="playlist"
-					:highlight="highlight"/>
+					:highlight="highlight"
+					@destroied="refreshData"/>
 			</template>
 			<tr
 				v-else>
@@ -76,6 +77,7 @@ const {
 	Paginator,
 	Filters,
 	highlight,
+	refreshData
 } = usePaginate(`/playlists/${playlist.id}/audios`);
 
 
