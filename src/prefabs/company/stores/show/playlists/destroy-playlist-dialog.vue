@@ -1,4 +1,11 @@
 <template>
+
+	<button
+		class="text-red-600 ml-4"
+		type="button"
+		@click="show = true">
+		删除
+	</button>
 	
 	<custom-dialog
 		v-model="show"
@@ -7,11 +14,17 @@
 		
 		<template
 			#title>
+			<i
+				class="mdi mdi-delete mr-2 text-red-600"></i>
 			删除播放列表
 		</template>
 
 		<form
 			@submit.prevent="destroyPlaylist">
+
+			<p>
+				{{ store.name }} 将不再播放 {{ playlist.name }}？
+			</p>
 
 			<footer
 				class="flex justify-between mt-4">
@@ -26,10 +39,10 @@
 				</xb-button>
 
 				<xb-button
-					scheme="success"
+					scheme="danger"
 					class="w-24"
 					:loading="loading">
-					添加
+					删除
 				</xb-button>
 
 			</footer>
@@ -55,11 +68,14 @@ let props = defineProps({
 		required: true,
 		type: Object,
 	},
+	store: {
+		required: true,
+		type: Object,
+	},
 });
 
 let emits = defineEmits([
-	'update:modelValue',
-	'deleted'
+	'destroied'
 ]);
 
 let show = ref(false);
@@ -73,10 +89,11 @@ let {
 const destroyPlaylist = () => {
 	loading.value = true;
 	axios.delete(
-			`/stores/${props.store.id}/playlists/${playlist.id}`,
+			`/stores/${props.store.id}/playlists/${props.playlist.id}`,
 		)
 		.then(({ data }) => {
-			emits('deleted');
+			show.value = false;
+			emits('destroied');
 		})
 		.catch(errors => {
 			handleFormErrors(errors);
@@ -84,5 +101,12 @@ const destroyPlaylist = () => {
 		.finally(() => {
 			loading.value = false;
 		});
+}
+</script>
+
+<script>
+export default {
+
+	inheritAttrs: false,
 }
 </script>

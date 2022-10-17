@@ -61,7 +61,7 @@
 				<tr
 					v-for="{id, name, created_at, last_used_at, ip, ip_location} in data.data">
 					<td
-						class="text-xs font-mono"
+						class="text-xs font-mono max-w-[300px]"
 						v-html="highlight(name.split(')').join(')<br>'))"/>
 					<td
 						class="text-sm font-mono"

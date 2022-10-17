@@ -29,15 +29,19 @@
 		@submit.prevent="storeStore">
 		
 		<xb-input
-			class="my-4"
+			class="mt-4 mb-2"
 			name="code"
 			placeholder="门店编号"
+			:tips="[
+				'唯一值，用于门店登录',
+				'仅限字母，数字，- 和 _'
+			]"
 			v-model="form.code"
 			v-model:errors="errors.code"
 			required/>
 
 		<xb-input
-			class="my-4"
+			class="mt-2 mb-4"
 			name="name"
 			placeholder="门店名称"
 			v-model="form.name"

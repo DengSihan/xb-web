@@ -1,4 +1,14 @@
 <template>
+
+	<header
+		class="my-4 text-sm">
+		<button
+			class="ml-auto block"
+			type="button"
+			@click="show = true">
+			添加播放列表
+		</button>
+	</header>
 	
 	<custom-dialog
 		v-model="show"
@@ -52,39 +62,33 @@
 
 <script setup>
 
-import { computed, defineAsyncComponent } from 'vue';
+import { defineAsyncComponent, ref } from 'vue';
 import { useForm } from '~/composables/form.js';
 import axios from '~/plugins/axios.js';
 
-const CustomDialog = defineAsyncComponent(() => import('~/components/custom-dialog.vue'));
+const CustomDialog = defineAsyncComponent(
+	() => import('~/components/custom-dialog.vue')
+);
 
-let props = defineProps({
-	modelValue: {
-		required: true,
-		type: Boolean,
-	},
+let { store }  = defineProps({
 	store: {
 		required: true,
 		type: Object,
 	},
 });
 
-let emits = defineEmits(['update:modelValue']);
+let emits = defineEmits([
+	'stored'
+]);
 
-let show = computed({
-	get() {
-		return props.modelValue;
-	},
-	set(value) {
-		emits('update:modelValue', value);
-	}
-});
+let show = ref(false);
 
 let {
 	form,
 	errors,
 	handleFormErrors,
 	loading,
+	reset,
 } = useForm({
 	playlist_id: null
 });
@@ -92,11 +96,13 @@ let {
 const storePlaylists = () => {
 	loading.value = true;
 	axios.post(
-			`/stores/${props.store.id}/playlists`,
+			`/stores/${store.id}/playlists`,
 			form.value
 		)
 		.then(({ data }) => {
-
+			reset();
+			show.value = false;
+			emits('stored');
 		})
 		.catch(errors => {
 			handleFormErrors(errors);
@@ -104,5 +110,12 @@ const storePlaylists = () => {
 		.finally(() => {
 			loading.value = false;
 		});
+}
+</script>
+
+<script>
+export default {
+
+	inheritAttrs: false,
 }
 </script>

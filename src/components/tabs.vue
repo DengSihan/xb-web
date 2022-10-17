@@ -8,8 +8,8 @@
 <template>
 	<nav
 		:style="{
-			'--option-width': `${(1 / (links.length || 1)).toFixed(2) * 100}%`,
-			'--marker-width': `${(1 / (links.length || 1)).toFixed(2) * 50}%`,
+			'--option-width': `calc(100%/${links.length || 1})`,
+			'--marker-width': `calc(50%/${links.length || 1})`,
 			'--marker-position-offset': `${(valueIndex * 200 + 50)}%`, 
 		}"
 		class="flex relative tabs">

@@ -1,5 +1,5 @@
 import { ref, computed } from 'vue';
-import lodash from 'lodash';
+import { cloneDeep } from 'lodash';
 
 const setObjectAttrValueAsEmptyArray = (obj = {}) => {
 	
@@ -22,10 +22,12 @@ const setObjectAttrValueAsEmptyArray = (obj = {}) => {
 
 export const useForm = formData => {
 
-	let form = ref(formData),
+	let form = ref(
+				cloneDeep(formData)
+			),
 		errors = ref(
 			setObjectAttrValueAsEmptyArray(
-				lodash.cloneDeep(formData)
+				cloneDeep(formData)
 			)
 		),
 		loading = ref(false);
@@ -46,11 +48,17 @@ export const useForm = formData => {
 		});
 	};
 
+	let reset = () => {
+		form.value = cloneDeep(formData);
+		clearFormErrors();
+	};
+
 	return {
 		loading,
 		form,
 		errors,
 		handleFormErrors,
 		clearFormErrors,
+		reset,
 	};
 }

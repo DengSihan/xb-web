@@ -1,9 +1,4 @@
 <template>
-
-	<store-playlist-dialog
-		:store="store"
-		@stored="refreshData"/>
-
 	<filters
 		searchLabel="名称"
 		disabled-orders/>
@@ -101,7 +96,6 @@
 </template>
 
 <script setup>
-import { ref, defineAsyncComponent } from 'vue';
 import { usePaginate } from '~/composables/paginate.js';
 import { useTime } from '~/composables/time.js';
 
@@ -118,21 +112,13 @@ const {
 	Filters,
 	highlight,
 	refreshData,
-} = usePaginate(`/stores/${store.id}/playlists`);
+} = usePaginate(`/stores/${store.id}/audios`);
 
 const {
 	formatDuration,
 	fromNow,
 	formatTimestamp,
 } = useTime();
-
-const StorePlaylistDialog = defineAsyncComponent(
-	() => import('~/prefabs/company/stores/show/playlists/store-playlist-dialog.vue')
-);
-
-const DestroyPlaylistDialog = defineAsyncComponent(
-	() => import('~/prefabs/company/stores/show/playlists/destroy-playlist-dialog.vue')
-);
 
 </script>
 

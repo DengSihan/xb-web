@@ -1,5 +1,82 @@
 <template>
-	<div>
-		
-	</div>
+	<filters
+		searchLabel="名称"/>
+	<table
+		class="xb-table my-4">
+		<thead>
+			<tr>
+				<th>
+					ID
+				</th>
+				<th>
+					音频名称
+				</th>
+				<th>
+					音频类型
+				</th>
+				<th>
+					时长
+				</th>
+				<th>
+					文件大小
+				</th>
+				<th>
+					创建时间
+				</th>
+				<th>
+					操作
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+			<template
+				v-if="data.data?.length">
+				<audio-show-tr
+					v-for="audio in data.data"
+					:key="audio.id"
+					:audio="audio"
+					:playlist="playlist"
+					:highlight="highlight"/>
+			</template>
+			<tr
+				v-else>
+				<td
+					colspan="6">
+					<h4
+						class="py-4 text-slate-400">
+						没有结果
+					</h4>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<paginator
+		class="my-4"
+		:paginate="data"/>
 </template>
+
+<script setup>
+import { defineAsyncComponent } from 'vue';
+import { usePaginate } from '~/composables/paginate.js';
+
+const AudioShowTr = defineAsyncComponent(
+	() => import('~/prefabs/company/playlists/show/audios/show-tr.vue')
+);
+
+const { playlist } = defineProps({
+	playlist: {
+		required: true,
+		type: Object
+	}
+});
+
+const {
+	data,
+	loading,
+	Paginator,
+	Filters,
+	highlight,
+} = usePaginate(`/playlists/${playlist.id}/audios`);
+
+
+</script>

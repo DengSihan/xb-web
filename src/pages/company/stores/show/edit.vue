@@ -14,15 +14,19 @@
 				@submit.prevent="update">
 
 				<xb-input
-					class="mb-4"
+					class="mb-2"
 					name="code"
+					:tips="[
+						'唯一值，用于门店登录',
+						'仅限字母，数字，- 和 _'
+					]"
 					placeholder="门店编号"
 					v-model="form.code"
 					v-model:errors="errors.code"
 					required/>
 
 				<xb-input
-					class="my-4"
+					class="mt-2 mb-4"
 					name="name"
 					placeholder="门店名称"
 					v-model="form.name"
