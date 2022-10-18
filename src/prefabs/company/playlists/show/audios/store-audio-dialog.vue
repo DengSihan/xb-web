@@ -196,7 +196,7 @@ const storeAudios = () => {
 		});
 
 	axios.post(
-			`/playlists/${store.id}/audios`,
+			`/playlists/${playlist.id}/audios`,
 			formData
 		)
 		.then(({ data }) => {
