@@ -49,6 +49,23 @@
 					required/>
 			</template>
 
+			<template
+				v-if="form.category === 3">
+				<xb-input
+					class="my-4"
+					v-model="form.interval"
+					v-model:errors="errors.interval"
+					name="interval"
+					type="number"
+					min="1"
+					step="1"
+					placeholder="促销音频间隔"
+					:tips="[
+						'指播放播放多少首背景音乐后再播放此音频'
+					]"
+					required/>
+			</template>
+
 
 			<template
 				v-if="
@@ -93,9 +110,9 @@
 					|| form.type === 'generated_from_audio'
 				"
 				class="my-4"
-				v-model="form.file"
-				v-model:errors="errors.file"
-				name="file"
+				v-model="form.audio"
+				v-model:errors="errors.audio"
+				name="audio"
 				type="file"
 				accept=".mp3,audio/*"
 				placeholder="音频文件"
@@ -176,7 +193,7 @@ let {
 	category: '',
 	text: null,
 	interval: null,
-	file: null,
+	audio: null,
 	type: null,
 	play_at: null,
 });
@@ -196,7 +213,7 @@ const storeAudios = () => {
 		});
 
 	axios.post(
-			`/playlists/${playlist.id}/audios`,
+			`/playlists/${props.playlist.id}/audios`,
 			formData
 		)
 		.then(({ data }) => {

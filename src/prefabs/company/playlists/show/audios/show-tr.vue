@@ -1,6 +1,9 @@
 <template>
 
-	<tr>
+	<tr
+		:class="{
+			'text-slate-500': !audio.playable
+		}">
 		<td>
 			{{ audio.id }}
 		</td>
