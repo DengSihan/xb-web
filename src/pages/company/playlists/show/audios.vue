@@ -1,4 +1,8 @@
 <template>
+
+	<store-audio-dialog
+		:playlist="playlist"/>
+
 	<filters
 		searchLabel="名称"/>
 	<table
@@ -59,6 +63,10 @@
 <script setup>
 import { defineAsyncComponent } from 'vue';
 import { usePaginate } from '~/composables/paginate.js';
+
+const StoreAudioDialog = defineAsyncComponent(
+	() => import('~/prefabs/company/playlists/show/audios/store-audio-dialog.vue')
+);
 
 const AudioShowTr = defineAsyncComponent(
 	() => import('~/prefabs/company/playlists/show/audios/show-tr.vue')
