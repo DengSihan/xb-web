@@ -1,3 +1,5 @@
+
+
 <template>
 	<header
 		class="w-[1280px] mx-auto py-4 flex justify-between items-center">
@@ -51,8 +53,15 @@
 		</nav>
 
 	</header>
+
+	<main>
+		<!-- <index-title/> -->
+	</main>
+
 </template>
 
 <script setup>
 const domain = import.meta.env.VITE_APP_HOST;
+
+// import IndexTitle from '~/prefabs/index/title.vue';
 </script>
