@@ -152,6 +152,7 @@
 					{{ company.name }}
 				</strong>
 				<button
+					@click="showLogoutDialog = true"
 					type="button"
 					class="mx-2 w-12 h-12 rounded scale-100 hover:scale-[102%] active:scale-[98%] text-red-600"
 					v-wave>
@@ -161,6 +162,42 @@
 			</span>
 			
 		</header>
+
+		<custom-dialog
+			v-model="showLogoutDialog"
+			:prevent="loading"
+			:hide-closer="loading">
+			<template
+				#title>
+				确认退出登录？
+			</template>
+			<form
+				@submit.prevent="destroyCurrentToken">
+				<p>
+					您确认退出当前登录？
+				</p>
+				<footer
+					class="flex justify-between mt-4">
+					
+					<xb-button
+						class="w-24"
+						scheme="info"
+						@click="confirm = false"
+						type="button"
+						:disabled="loading">
+						取消
+					</xb-button>
+
+					<xb-button
+						scheme="danger"
+						class="min-w-24"
+						:loading="loading">
+						确认退出
+					</xb-button>
+
+				</footer>
+			</form>
+		</custom-dialog>
 
 		<div
 			id="dashboard-content"
@@ -297,12 +334,46 @@
 </template>
 
 <script setup>
+
+import { ref, defineAsyncComponent, computed } from 'vue';
+import { useForm } from '~/composables/form.js';
+import { useRouter } from 'vue-router';
+import { useAuth } from '~/plugins/mode.js';
+import axios from '~/plugins/axios.js';
+
 const year = (new Date()).getFullYear();
+
+const CustomDialog = defineAsyncComponent(() => import('~/components/custom-dialog.vue'));
+
+const showLogoutDialog = ref(false);
+
+const router = useRouter();
+
+const company = computed(() => useAuth()?.company);
+
+const {
+	loading,
+} = useForm();
+
+const destroyCurrentToken = () => {
+	loading.value = true;
+	axios.delete(
+			`/auth/token`
+		)
+		.then(() => {
+			useAuth().clearAuth();
+			router.push({
+				name: 'login'
+			});
+		})
+		.finally(() => {
+			loading.value = false;
+		});
+};
+
 </script>
 
 <script>
-
-import { useAuth } from '~/store/company/auth.js';
 import resolveConfig from 'tailwindcss/resolveConfig'
 
 
@@ -320,12 +391,6 @@ export default {
 		return {
 			activeSidebar: false,
 			host: import.meta.env.VITE_APP_HOST
-		}
-	},
-
-	computed: {
-		company() {
-			return useAuth().company;
 		}
 	},
 
