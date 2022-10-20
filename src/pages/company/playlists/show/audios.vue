@@ -1,7 +1,8 @@
 <template>
 
 	<store-audio-dialog
-		:playlist="playlist"/>
+		:playlist="playlist"
+		@stored="refreshData"/>
 
 	<filters
 		searchLabel="名称"/>
@@ -72,7 +73,7 @@ const AudioShowTr = defineAsyncComponent(
 	() => import('~/prefabs/company/playlists/show/audios/show-tr.vue')
 );
 
-const { playlist } = defineProps({
+const props = defineProps({
 	playlist: {
 		required: true,
 		type: Object
@@ -81,12 +82,11 @@ const { playlist } = defineProps({
 
 const {
 	data,
-	loading,
 	Paginator,
 	Filters,
 	highlight,
 	refreshData
-} = usePaginate(`/playlists/${playlist.id}/audios`);
+} = usePaginate(`/playlists/${props.playlist.id}/audios`);
 
 
 </script>

@@ -216,7 +216,7 @@ const storeAudios = () => {
 			`/playlists/${props.playlist.id}/audios`,
 			formData
 		)
-		.then(({ data }) => {
+		.then(() => {
 			reset();
 			show.value = false;
 			emits('stored');

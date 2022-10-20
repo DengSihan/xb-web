@@ -7,9 +7,9 @@
 		<td>
 			{{ audio.id }}
 		</td>
-		<td>
-			{{ highlight(audio.name) }}
-		</td>
+		<td
+			class="max-w-[400px]"
+			v-html="highlight(audio.name)"/>
 		<td>
 			{{ audio.category }}
 		</td>
@@ -56,7 +56,8 @@
 					class="w-[8rem]">
 					ID
 				</strong>
-				<span>
+				<span
+					class="w-[calc(100%-8rem)]">
 					{{ audio.id }}
 				</span>
 			</li>
@@ -66,7 +67,8 @@
 					class="w-[8rem]">
 					名称
 				</strong>
-				<span>
+				<span
+					class="w-[calc(100%-8rem)]">
 					{{ audio.name }}
 				</span>
 			</li>
@@ -76,7 +78,8 @@
 					class="w-[8rem]">
 					类型
 				</strong>
-				<span>
+				<span
+					class="w-[calc(100%-8rem)]">
 					{{ audio.category }}
 				</span>
 			</li>
@@ -86,7 +89,8 @@
 					class="w-[8rem]">
 					时长
 				</strong>
-				<span>
+				<span
+					class="w-[calc(100%-8rem)]">
 					{{ audio.duration }}
 				</span>
 			</li>
@@ -96,7 +100,8 @@
 					class="w-[8rem]">
 					大小
 				</strong>
-				<span>
+				<span
+					class="w-[calc(100%-8rem)]">
 					{{ audio.size }}
 				</span>
 			</li>
@@ -107,7 +112,8 @@
 					class="w-[8rem]">
 					播放次数
 				</strong>
-				<span>
+				<span
+					class="w-[calc(100%-8rem)]">
 					{{ audio.view }}
 				</span>
 			</li>
@@ -117,7 +123,8 @@
 					class="w-[8rem]">
 					由文字生成
 				</strong>
-				<span>
+				<span
+					class="w-[calc(100%-8rem)]">
 					{{ audio.generate_from_text ? '是' : '否' }}
 				</span>
 			</li>
@@ -128,7 +135,8 @@
 					class="w-[8rem]">
 					文字
 				</strong>
-				<span>
+				<span
+					class="w-[calc(100%-8rem)]">
 					{{ audio.text }}
 				</span>
 			</li>
@@ -138,8 +146,28 @@
 					class="w-[8rem]">
 					可播放
 				</strong>
-				<span>
+				<span
+					class="w-[calc(100%-8rem)]">
 					{{ audio.playable ? '是' : '否' }}
+				</span>
+			</li>
+			<li
+				v-if="audio.playable"
+				class="flex">
+				<strong
+					class="w-[8rem]">
+					音频
+				</strong>
+				<span
+					class="w-[calc(100%-8rem)]">
+					<audio
+						class="w-full"
+						controls
+						controlsList="nodownload">
+						<source
+							:src="audio.path"
+							type="audio/mpeg">
+					</audio>
 				</span>
 			</li>
 		</ul>
@@ -255,7 +283,7 @@ const destroyAudio = () => {
 	axios.delete(
 			`/playlists/${props.playlist.id}/audios/${props.audio.id}`,
 		)
-		.then(({ data }) => {
+		.then(() => {
 			confirm.value = false;
 			show.value = false;
 			emits('destroyed');
