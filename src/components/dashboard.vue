@@ -182,7 +182,7 @@
 					<xb-button
 						class="w-24"
 						scheme="info"
-						@click="confirm = false"
+						@click="showLogoutDialog = false"
 						type="button"
 						:disabled="loading">
 						取消
