@@ -145,16 +145,59 @@
 		</ul>
 
 		<form
-			class="flex items-center justify-between my-4 rounded border-2 border-red-600 bg-red-50 p-2 text-red-600"
-			@submit.prevent="destroyAudio">
-			<p>
-				删除此音频？
-			</p>
+			class="text-right my-4 rounded border-2 border-red-600 bg-red-50 p-2 text-red-600"
+			@submit.prevent="confirm = true">
 			<xb-button
 				:loading="loading"
 				scheme="danger">
-				确认删除
+				删除音频
 			</xb-button>
+		</form>
+
+	</custom-dialog>
+
+	<custom-dialog
+		prevent
+		hide-closer
+		v-model="confirm">
+		
+		<template
+			#title>
+			<i
+				class="mdi mdi-delete text mr-2"></i>
+			删除音频
+		</template>
+
+		<form
+			@submit.prevent="destroyAudio">
+			<p>
+				确认删除	
+				<i
+					class="font-bold">
+					{{ audio.name }}
+				</i>
+				？
+			</p>
+			<footer
+				class="flex justify-between mt-4">
+				
+				<xb-button
+					class="w-24"
+					scheme="info"
+					@click="confirm = false"
+					type="button"
+					:disabled="loading">
+					取消
+				</xb-button>
+
+				<xb-button
+					scheme="danger"
+					class="w-24"
+					:loading="loading">
+					删除
+				</xb-button>
+
+			</footer>
 		</form>
 
 	</custom-dialog>
@@ -205,12 +248,15 @@ let {
 	loading,
 } = useForm();
 
+let confirm = ref(false);
+
 const destroyAudio = () => {
 	loading.value = true;
 	axios.delete(
 			`/playlists/${props.playlist.id}/audios/${props.audio.id}`,
 		)
 		.then(({ data }) => {
+			confirm.value = false;
 			show.value = false;
 			emits('destroyed');
 		})
