@@ -58,43 +58,12 @@
 		<tbody>
 			<template
 				v-if="data.data?.length">
-				<tr
-					v-for="{id, name, created_at, last_used_at, ip, ip_location} in data.data">
-					<td
-						class="text-xs font-mono max-w-[300px]"
-						v-html="highlight(name.split(')').join(')<br>'))"/>
-					<td
-						class="text-sm font-mono"
-						v-html="highlight(ip)"/>
-					<td
-						class="text-sm">
-						{{ ip_location }}
-					</td>
-					<td>
-						<time
-							class="text-xs font-mono"
-							:datetime="created_at"
-							:title="fromNow(created_at)">
-							{{ formatTimestamp(created_at) }}
-						</time>
-					</td>
-					<td>
-						<time
-							class="text-xs font-mono"
-							:datetime="last_used_at"
-							:title="fromNow(last_used_at)">
-							{{ formatTimestamp(last_used_at) }}
-						</time>
-					</td>
-					<td>
-						<button
-							@click="destroy(id)"
-							class="text-red-600"
-							type="button">
-							吊销
-						</button>
-					</td>
-				</tr>
+				<show-tr
+					v-for="token in data.data"
+					:token="token"
+					:highlight="highlight"
+					:key="token.id"
+					@destroyed="refreshData()"/>
 			</template>
 			<tr
 				v-else>
@@ -114,33 +83,17 @@
 </template>
 
 <script setup>
+import { defineAsyncComponent } from 'vue';
 import { usePaginate } from '~/composables/paginate.js';
-import { useTime } from '~/composables/time.js';
-import axios from '~/plugins/axios.js';
+
+const ShowTr = defineAsyncComponent(() => import('~/prefabs/commons/tokens/show-tr.vue'));
 
 const {
 	data,
-	loading,
 	Paginator,
 	Filters,
 	highlight,
 	refreshData,
 } = usePaginate('/auth/tokens');
-
-const {
-	fromNow,
-	formatTimestamp,
-} = useTime();
-
-const destroy = id => {
-	if (confirm('您确定吊销此授权？')) {
-		axios.delete(
-				`/auth/tokens/${id}`,
-			)
-			.then(() => {
-				refreshData();
-			});
-	}
-}
 
 </script>

@@ -75,7 +75,7 @@ let props = defineProps({
 });
 
 let emits = defineEmits([
-	'destroied'
+	'destroyed'
 ]);
 
 let show = ref(false);
@@ -93,7 +93,7 @@ const destroyPlaylist = () => {
 		)
 		.then(({ data }) => {
 			show.value = false;
-			emits('destroied');
+			emits('destroyed');
 		})
 		.catch(errors => {
 			handleFormErrors(errors);

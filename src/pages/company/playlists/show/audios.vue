@@ -41,7 +41,7 @@
 					:audio="audio"
 					:playlist="playlist"
 					:highlight="highlight"
-					@destroied="refreshData"/>
+					@destroyed="refreshData"/>
 			</template>
 			<tr
 				v-else>

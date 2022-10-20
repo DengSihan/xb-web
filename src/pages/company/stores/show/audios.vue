@@ -74,7 +74,7 @@
 						<destroy-playlist-dialog
 							:playlist="playlist"
 							:store="store"
-							@destroied="refreshData"/>
+							@destroyed="refreshData"/>
 					</td>
 				</tr>
 			</template>

@@ -194,7 +194,7 @@ let props = defineProps({
 });
 
 let emits = defineEmits([
-	'destroied'
+	'destroyed'
 ]);
 
 let show = ref(false);
@@ -212,7 +212,7 @@ const destroyAudio = () => {
 		)
 		.then(({ data }) => {
 			show.value = false;
-			emits('destroied');
+			emits('destroyed');
 		})
 		.catch(errors => {
 			handleFormErrors(errors);
