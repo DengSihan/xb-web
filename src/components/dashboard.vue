@@ -20,7 +20,7 @@
 			custom
 			v-slot="{ href, navigate }">
 			<a
-				class="block flex items-center font-bold text-lg tracking-widest h-16 px-4 border-b"
+				class="flex items-center font-bold text-lg tracking-widest h-16 px-4 border-b"
 				:href="href"
 				@click.prevent="nav(navigate)">
 				<img
@@ -102,7 +102,7 @@
 		</nav>
 
 		<footer
-			class="h-12 block text-xs text-slate-600 flex items-center px-4">
+			class="h-12 text-xs text-slate-600 flex items-center px-4">
 			Copyright © {{ year }} 重庆相对科技有限公司
 		</footer>
 
