@@ -68,7 +68,8 @@
 </template>
 
 <script setup>
-import { defineAsyncComponent, ref, onBeforeMount } from 'vue';
+import { defineAsyncComponent, ref, onBeforeMount, computed } from 'vue';
+import { useMeta } from 'vue-meta';
 import axios from '~/plugins/axios.js';
 
 const Tabs = defineAsyncComponent(() => import('~/components/tabs.vue'));''
@@ -79,6 +80,14 @@ let store = ref({}),
 			required: true,
 		}
 	});
+
+useMeta(computed(() => {
+	return {
+		title: store.value.name
+			? `${store.value.name} - 门店详情`
+			: '门店详情',
+	};
+}));
 
 onBeforeMount(async () => {
 	let { data } = await axios.get(`/stores/${storeId}`);

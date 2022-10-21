@@ -78,11 +78,16 @@
 
 <script setup>
 import { useRouter } from 'vue-router';
+import { useMeta } from 'vue-meta';
 import { notify } from '@kyvg/vue3-notification';
 import { useForm } from '~/composables/form.js';
 import axios from '~/plugins/axios.js'
 
-let {
+useMeta({
+	title: '新增门店',
+});
+
+const {
 	loading,
 	form,
 	errors,

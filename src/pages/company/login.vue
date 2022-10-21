@@ -39,6 +39,11 @@
 
 <script setup>
 import { useForm } from '~/composables/form.js';
+import { useMeta } from 'vue-meta';
+
+useMeta({
+	title: '登录 - 广播云',
+});
 
 const { 
 	loading,

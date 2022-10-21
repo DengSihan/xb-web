@@ -49,8 +49,13 @@
 <script setup>
 import { useRouter } from 'vue-router';
 import { notify } from '@kyvg/vue3-notification';
+import { useMeta } from 'vue-meta';
 import { useForm } from '~/composables/form.js';
 import axios from '~/plugins/axios.js'
+
+useMeta({
+	title: '新增播放列表',
+});
 
 let {
 	loading,

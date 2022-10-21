@@ -112,8 +112,13 @@
 </template>
 
 <script setup>
+import { useMeta } from 'vue-meta';
 import { usePaginate } from '~/composables/paginate.js';
 import { useTime } from '~/composables/time.js';
+
+useMeta({
+	title: '播放列表',
+});
 
 const {
 	data,

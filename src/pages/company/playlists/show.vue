@@ -77,8 +77,10 @@
 </template>
 
 <script setup>
-import { defineAsyncComponent, ref, onBeforeMount } from 'vue';
+import { defineAsyncComponent, ref, onBeforeMount, computed } from 'vue';
+import { useMeta } from 'vue-meta';
 import axios from '~/plugins/axios.js';
+
 
 const Tabs = defineAsyncComponent(() => import('~/components/tabs.vue'));''
 
@@ -88,6 +90,14 @@ let playlist = ref({}),
 			required: true,
 		}
 	});
+
+useMeta(computed(() => {
+	return {
+		title: playlist.value.name
+			? `${playlist.value.name} - 播放列表详情`
+			: '播放列表详情'
+	}
+}));
 
 onBeforeMount(async () => {
 	let { data } = await axios.get(`/playlists/${playlistId}`);

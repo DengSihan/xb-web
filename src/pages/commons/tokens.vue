@@ -84,7 +84,12 @@
 
 <script setup>
 import { defineAsyncComponent } from 'vue';
+import { useMeta } from 'vue-meta';
 import { usePaginate } from '~/composables/paginate.js';
+
+useMeta({
+	title: '授权列表',
+});
 
 const ShowTr = defineAsyncComponent(() => import('~/prefabs/commons/tokens/show-tr.vue'));
 

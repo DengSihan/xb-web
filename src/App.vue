@@ -1,7 +1,14 @@
 <template>
 	<metainfo>
-		<template v-slot:title="{ content }">{{ content }} - 广播云</template>
-    </metainfo>
+		<template
+			v-slot:title="{ content, metainfo }">
+			{{
+				metainfo?.titleTemplate
+					? metainfo.titleTemplate.replace('%s', content)
+					: content
+			}}
+		</template>
+	</metainfo>
 	<notifications-wrapper/>
 	<router-view/>
 </template>

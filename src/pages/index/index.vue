@@ -61,6 +61,13 @@
 </template>
 
 <script setup>
+import { useMeta } from 'vue-meta';
+
+useMeta({
+	title: '广播云',
+	titleTemplate: false
+});
+
 const domain = import.meta.env.VITE_APP_HOST;
 
 // import IndexTitle from '~/prefabs/index/title.vue';

@@ -13,5 +13,4 @@ const { company } = useAuth();
 useMeta({
 	title: company.name,
 });
-
 </script>
