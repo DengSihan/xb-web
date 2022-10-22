@@ -1,8 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import NProgress from 'nprogress';
 
-import { getCurrentMode } from '~/plugins/mode.js';
-
 import guestCompany from '~/middlewares/company/guest.js';
 import authCompany from '~/middlewares/company/auth.js';
 
@@ -11,30 +9,10 @@ import authCompany from '~/middlewares/company/auth.js';
 const page = path => () => import(`./pages/${path}.vue`);
 
 
-
 let routes = [],
-	mode = getCurrentMode();
+	mode = window.location.host.split('.')[0];
 
-if (mode === 'index') {
-	routes = [
-		{
-			path: '/',
-			name: 'index',
-			component: () => import('~/pages/index/index.vue'),
-		},
-		{
-			path: '/download',
-			name: 'download',
-			component: () => import('~/pages/index/download.vue'),
-		},
-		{
-			path: '/win-win',
-			name: 'win-win',
-			component: () => import('~/pages/index/win-win.vue'),
-		}
-	];
-}
-else if (mode === 'company') {
+if (mode === 'company') {
 	routes = [
 		{
 			path: '/login',
@@ -148,6 +126,25 @@ else if (mode === 'admin') {
 			path: '/login',
 			name: 'login',
 			component: () => import('~/pages/admin/login.vue'),
+		}
+	];
+}
+else {
+	routes = [
+		{
+			path: '/',
+			name: 'index',
+			component: () => import('~/pages/index/index.vue'),
+		},
+		{
+			path: '/download',
+			name: 'download',
+			component: () => import('~/pages/index/download.vue'),
+		},
+		{
+			path: '/win-win',
+			name: 'win-win',
+			component: () => import('~/pages/index/win-win.vue'),
 		}
 	];
 }
