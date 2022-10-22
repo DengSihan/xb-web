@@ -7,7 +7,7 @@ import { getCurrentMode } from '~/plugins/mode.js';
 // https://github.com/vitejs/vite/issues/4945
 const page = path => () => import(`./pages/${path}.vue`);
 
-const routes = {};
+let routes = {};
 
 routes['index'] = [
 	{
@@ -42,6 +42,7 @@ routes['admin'] = [
 
 import guestCompany from '~/middlewares/company/guest.js';
 import authCompany from '~/middlewares/company/auth.js';
+
 routes['company'] = [
 	
 	{
@@ -145,9 +146,10 @@ routes['company'] = [
 	},
 ];
 
-Object.keys(routes).forEach(key => {
-	routes[key] = [
-		...routes[key],
+let router = createRouter({
+	history: createWebHistory(),
+	routes: [
+		...routes[getCurrentMode()],
 		{
 			path: '/private-policy',
 			name: 'private-policy',
@@ -157,13 +159,8 @@ Object.keys(routes).forEach(key => {
 			path: '/apps',
 			name: 'apps',
 			component: () => import('~/pages/apps.vue')
-		}
-	];
-});
-
-const router = createRouter({
-	history: createWebHistory(),
-	routes: routes[getCurrentMode()]
+		},
+	]
 });
 
 router.beforeEach((to, from, next) => {
