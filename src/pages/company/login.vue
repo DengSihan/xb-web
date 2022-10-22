@@ -38,12 +38,21 @@
 </template>
 
 <script setup>
+import axios from '~/plugins/axios.js';
+
 import { useForm } from '~/composables/form.js';
+import { useAuth } from '~/store/company/auth.js';
+
 import { useMeta } from 'vue-meta';
+import { useRouter } from 'vue-router';
 
 useMeta({
 	title: '登录 - 广播云',
 });
+
+const router = useRouter();
+
+const auth = useAuth();
 
 const { 
 	loading,
@@ -55,39 +64,27 @@ const {
 	code: '',
 	password: '',
 });
-</script>
 
-<script>
+const login = () => {
+	loading.value = true;
 
-import axios from '~/plugins/axios.js';
-import { useAuth } from '~/store/company/auth.js';
+	axios.post(`/auth/tokens`, form.value)
+		.then(({ data }) => {
+			
+			clearFormErrors();
+			
+			auth.setAuth(data);
 
-export default {
-	
-	methods: {
-		login() {
-
-			this.loading = true;
-
-			axios.post(`/auth/tokens`, this.form)
-				.then(({ data }) => {
-					
-					this.clearFormErrors();
-					
-					useAuth().setAuth(data);
-
-					this.$router.push({
-						name: 'index',
-					});
-				})
-				.catch(err => {
-					this.handleFormErrors(err);
-				})
-				.finally(() => {
-					this.loading = false;
-				});
-		}
-	}
+			router.push({
+				name: 'index',
+			});
+		})
+		.catch(err => {
+			handleFormErrors(err);
+		})
+		.finally(() => {
+			loading.value = false;
+		});
 }
 </script>
 
