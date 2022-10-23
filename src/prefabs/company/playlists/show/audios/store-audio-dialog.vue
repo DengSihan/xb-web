@@ -47,6 +47,30 @@
 					type="time"
 					placeholder="播放时间"
 					required/>
+				<xb-input
+					class="my-4"
+					v-model="form.count"
+					v-model:errors="errors.count"
+					name="count"
+					type="number"
+					min="1"
+					step="1"
+					placeholder="播放次数"
+					required/>
+				<xb-input
+					v-if="form.count > 1"
+					class="my-4"
+					v-model="form.between"
+					v-model:errors="errors.between"
+					name="between"
+					type="number"
+					min="1"
+					step="1"
+					placeholder="音频间隔时间（分钟）"
+					:tips="[
+						'指促销音频之间开始播放时间的间隔'
+					]"
+					required/>
 			</template>
 
 			<template
@@ -163,6 +187,7 @@ import { defineAsyncComponent, ref } from 'vue';
 import { useForm } from '~/composables/form.js';
 import { useAudio } from '~/composables/translator.js';
 import axios from '~/plugins/axios.js';
+import { notify } from '@kyvg/vue3-notification';
 
 const CustomDialog = defineAsyncComponent(
 	() => import('~/components/custom-dialog.vue')
@@ -196,6 +221,8 @@ let {
 	audio: null,
 	type: null,
 	play_at: null,
+	between: null,
+	count: 1,
 });
 
 const storeAudios = () => {
@@ -220,6 +247,11 @@ const storeAudios = () => {
 			reset();
 			show.value = false;
 			emits('stored');
+			notify({
+			    title: '音频创建中',
+			    text: '音频创建中，请稍候',
+			    type: 'success',
+			});
 		})
 		.catch(errors => {
 			handleFormErrors(errors);

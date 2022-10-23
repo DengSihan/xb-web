@@ -11,7 +11,7 @@
 			class="max-w-[400px]"
 			v-html="highlight(audio.name)"/>
 		<td>
-			{{ audio.category }}
+			{{ translateCategory(audio.category) }}
 		</td>
 		<td>
 			{{ audio.duration }}
@@ -80,7 +80,7 @@
 				</strong>
 				<span
 					class="w-[calc(100%-8rem)]">
-					{{ audio.category }}
+					{{ translateCategory(audio.category) }}
 				</span>
 			</li>
 			<li
@@ -110,13 +110,43 @@
 				class="flex">
 				<strong
 					class="w-[8rem]">
-					播放次数
+					累计播放次数
 				</strong>
 				<span
 					class="w-[calc(100%-8rem)]">
 					{{ audio.view }}
 				</span>
 			</li>
+
+			<template
+				v-if="audio.category === 2">
+			
+				<li
+					class="flex">
+					<strong
+						class="w-[8rem]">
+						播放次数
+					</strong>
+					<span
+						class="w-[calc(100%-8rem)]">
+						{{ audio.count }}
+					</span>
+				</li>
+				<li
+					v-if="audio.count > 1"
+					class="flex">
+					<strong
+						class="w-[8rem]">
+						播放间隔时间
+					</strong>
+					<span
+						class="w-[calc(100%-8rem)]">
+						{{ audio.between }} 分钟
+					</span>
+				</li>
+				
+			</template>	
+
 			<li
 				class="flex">
 				<strong
@@ -237,7 +267,10 @@
 import { ref, defineAsyncComponent } from 'vue';
 import { useForm } from '~/composables/form.js';
 import { useTime } from '~/composables/time.js';
+import { useAudio } from '~/composables/translator.js';
 import axios from '~/plugins/axios.js';
+
+const { translateCategory } = useAudio();
 
 const {
 	formatDuration,
