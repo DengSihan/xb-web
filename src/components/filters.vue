@@ -41,14 +41,24 @@
 </template>
 
 <script setup>
-import { useRoute } from 'vue-router';
-import { ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { ref, computed, watch } from 'vue';
+import { pick, cloneDeep } from 'lodash';
+
+const route = useRoute(),
+	router = useRouter();
 
 const form = ref({
-	keyword: useRoute().query.keyword ?? '' 
+	keyword: route.query.keyword ?? '' 
 });
 
-let { searchLabel, optionsables, orderables } = defineProps({
+const keywordInRoute = computed(() => {
+	return route.query.value
+		? route.query.value
+		: '';
+});
+
+let props = defineProps({
 	searchLabel: {
 		required: false,
 		type: String,
@@ -99,78 +109,76 @@ let { searchLabel, optionsables, orderables } = defineProps({
 	}
 });
 
+const search = () => {
+	router.push({
+		...route,
+		query: form.value.keyword
+			? { keyword: form.value.keyword }
+			: {}
+	});
+}
+
+watch(
+	() => keywordInRoute,
+	(keyword) => {
+		if(form.value.keyword !== keyword) {
+			form.value = {
+				keyword
+			};
+		}
+	}
+);
+
+const getOptionRoute = (key, value) => {
+	let query = cloneDeep(route.query);
+
+	if (value !== (query[key] ?? '')) {
+		delete query.page;
+		query[key] = value;
+	}
+	
+	if (!value) {
+		delete query[key];
+	}
+
+	return {
+		...pick(route, ['name', 'params']),
+		query,
+	};
+};
+
+const computedOptionsables = computed(() => {
+	let optionsables = props.optionsables;
+
+	if (!props.disabledOrders) {
+		optionsables.push({
+			label: '排序方式',
+			key: 'order',
+			options: [
+				{
+					label: '默认排序',
+					value: '',
+				},
+				...props.orderables
+			],
+		});
+	}
+
+	return optionsables;
+});
+
+const currentFullPath = computed(() => {
+	return route.fullPath;
+});
+
 </script>
 
 <script>
 
-import { pick, cloneDeep } from 'lodash';
+
 
 export default {
 
 	inheritAttrs: false,
-
-	computed: {
-		computedOptionsables() {
-
-			let optionsables = this.optionsables;
-
-			if (!this.disabledOrders) {
-				optionsables.push({
-					label: '排序方式',
-					key: 'order',
-					options: [
-						{
-							label: '默认排序',
-							value: '',
-						},
-						...this.orderables
-					],
-				});
-			}
-
-			return optionsables;
-		},
-		currentFullPath() {
-			return this.$route.fullPath;
-		},
-	},
-
-	watch: {
-		'$route.query.keyword'(value) {
-			if (this.form.keyword !== value) {
-				this.form.keyword = value;
-			}
-		}
-	},
-
-	methods: {
-		search() {
-			this.$router.push({
-				...this.$route,
-				query: this.form.keyword
-					? { keyword: this.form.keyword }
-					: {}
-			});
-		},
-
-		getOptionRoute(key, value) {
-
-			let query = cloneDeep(this.$route.query);
-
-			if (value !== (query[key] ?? '')) {
-				delete query.page;
-				query[key] = value;
-			}
-			
-			if (!value) {
-				delete query[key];
-			}
-
-			return {
-				...pick(this.$route, ['name', 'params']),
-				query,
-			};
-		}
-	}
 }
 </script>
