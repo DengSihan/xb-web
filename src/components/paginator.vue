@@ -28,7 +28,7 @@
 			class="-mx-1 flex items-center">
 			
 			<router-link
-				:to="getCurrentRouteWithoutPageQuery(previousPage)"
+				:to="previousRoute"
 				:disabled="previousPage === 1"
 				v-wave="previousPage !== 1">
 				<i
@@ -47,7 +47,15 @@
 				</span>
 				<router-link
 					class="page-index"
-					:to="getCurrentRouteWithoutPageQuery(page)"
+					:to="page !== 1
+						? {
+							...$route,
+							query: {
+								...$route.query,
+								page
+							}
+						}
+						: firstRoute"
 					:style="{
 						'font-size': `${Math.pow(1.1, (-1 * page.toString().length) + 1) * 100}%`
 					}"
@@ -66,7 +74,7 @@
 			</template>
 			
 			<router-link
-				:to="getCurrentRouteWithoutPageQuery(nextPage)"
+				:to="nextRoute"
 				:disabled="nextPage === paginate.last_page"
 				v-wave="nextPage !== paginate.last_page">
 				<i
@@ -91,9 +99,50 @@ export default {
 	},
 
 	computed: {
+
 		currentPage() {
 			return parseInt(this.$route.query.page ?? 1);
 		},
+
+		firstRoute () {
+			let route = {
+				...this.$route
+			};
+
+			delete route.query.page;
+
+			return route;
+		},
+
+		previousRoute () {
+			let route = {
+				...this.$route,
+				query: {
+					...this.$route.query,
+					page: this.previousPage === 1
+						? 1
+						: this.previousPage
+				}
+			};
+
+			if (route.query.page === 1) {
+				delete route.query.page;
+			}
+
+			return route;
+		},
+		nextRoute () {
+			let route = {
+				...this.$route,
+				query: {
+					...this.$route.query,
+					page: this.nextPage
+				}
+			};
+			
+			return route;
+		},
+
 		previousPage() {
 			return this.currentPage > 1
 				? this.currentPage - 1
@@ -113,21 +162,6 @@ export default {
 						|| (this.paginate.last_page - i) < 3
 						|| Math.abs(i - this.currentPage) < 2;
 				});
-		}
-	},
-
-	methods: {
-		getCurrentRouteWithoutPageQuery(page) {
-			let route = lodash.cloneDeep(this.$route);
-
-			if (page === 1) {
-				delete route.query.page;
-			}
-			else {
-				route.query.page = page;
-			}
-
-			return route;
 		}
 	}
 }

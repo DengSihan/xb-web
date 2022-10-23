@@ -1,7 +1,6 @@
-import { defineAsyncComponent, ref, shallowRef, watch, onBeforeMount, computed, onBeforeUnmount } from 'vue';
+import { defineAsyncComponent, ref, shallowRef, watch, onBeforeMount, onBeforeUnmount, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import axios from '~/plugins/axios.js';
-import { cloneDeep } from 'lodash';
 
 export const usePaginate = api => {
 
@@ -16,17 +15,20 @@ export const usePaginate = api => {
 	const route = useRoute();
 
 	let query = computed(() => route.query),
-		response = shallowRef({}),
-		data = computed(() => response.value.data),
+		data = shallowRef({}),
 		loading = ref(false);
 		
-	const refreshData = async () => {
-		
+	const refreshData = () => {
 		loading.value = true;
-
-		response.value = await axios.get(api, {params: query.value});
-
-		loading.value = false;
+		axios
+			.get(api, {params: query.value})
+			.then(({ data:response }) => {
+				data.value = response;
+				document.querySelector('#dashboard-content')?.scrollTo({ top:0 });
+			})
+			.finally(() => {
+				loading.value = false
+			});
 	};
 
 	const highlight = raw => {
@@ -39,28 +41,26 @@ export const usePaginate = api => {
 			: raw;
 	}
 
-	const stop = watch(
+	const stopWatchQuery = watch(
 		() => {
 			return {
 				query: query.value,
-				route: route.name,
+				routeName: route.name
 			}
 		},
 		(value, old) => {
-			if (
-				value.route === old.route 
-			) {
+			if (value.routeName === old.routeName) {
 				refreshData();
 			}
 		}
 	);
 
-	onBeforeUnmount(() => {
-		stop();
-	});
-
 	onBeforeMount(() => {
 		refreshData();
+	});
+
+	onBeforeUnmount(() => {
+		stopWatchQuery();
 	});
 
 	return {
