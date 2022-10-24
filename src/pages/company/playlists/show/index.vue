@@ -84,7 +84,7 @@
 <script setup>
 import { useTime } from '~/composables/time.js';
 
-let { playlist } = defineProps({
+defineProps({
 	playlist: {
 		required: true,
 	}
@@ -93,7 +93,6 @@ let { playlist } = defineProps({
 let {
 	formatDuration,
 	formatTimestamp,
-	fromNow,
 } = useTime();
 
 </script>

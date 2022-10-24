@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia';
 import axios from '~/plugins/axios.js';
 import Cookie from 'js-cookie';
-import lodash from 'lodash';
 
 export const useAuth = defineStore('auth', {
 

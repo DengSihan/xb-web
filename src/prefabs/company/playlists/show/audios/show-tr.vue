@@ -14,7 +14,7 @@
 			{{ translateCategory(audio.category) }}
 		</td>
 		<td>
-			{{ audio.duration }}
+			{{ formatDuration(audio.duration) }}
 		</td>
 		<td>
 			{{ audio.size }}
@@ -91,7 +91,7 @@
 				</strong>
 				<span
 					class="w-[calc(100%-8rem)]">
-					{{ audio.duration }}
+					{{ formatDuration(audio.duration) }}
 				</span>
 			</li>
 			<li

@@ -63,8 +63,7 @@
 						{{ count }}
 					</td>
 					<td>
-						<code
-							v-html="formatDuration(duration)"/>
+						{{ formatDuration(duration) }}
 					</td>
 					<td>
 						<time

@@ -5,28 +5,6 @@
 @import 'nprogress/nprogress.css';
 @import 'library.scss';
 
-*::-webkit-scrollbar-thumb,
-*::-webkit-scrollbar-thumb:hover {
-	border-radius: 9px;
-	border: solid 6px transparent;
-	background-clip: content-box;
-}
-*::-webkit-scrollbar-thumb:hover,
-*::-webkit-scrollbar-thumb:active {
-	border: solid 5px transparent;
-}
-*::-webkit-scrollbar {
-	@apply min-h-[18px] min-w-[18px];
-}
-*::-webkit-scrollbar-thumb {
-	@apply bg-slate-400;
-
-	&:hover,
-	&:active {
-		@apply bg-slate-600;
-	}
-}
-
 #app {
 	@apply relative h-screen;
 }
