@@ -70,9 +70,9 @@
 			</span>
 			<time
 				class="font-mono mx-2"
-				:datetime="store.token?.last_actived_at"
-				:title="fromNow(store.token?.last_actived_at)">
-				{{ formatTimestamp(store.token?.last_actived_at) }}
+				:datetime="store.token?.last_used_at"
+				:title="fromNow(store.token?.last_used_at)">
+				{{ formatTimestamp(store.token?.last_used_at) }}
 			</time>
 		</p>
 
@@ -85,6 +85,30 @@
 			<span
 				class="font-mono mx-2">
 				{{ store.token?.name }}
+			</span>
+		</p>
+
+		<p
+			class="-mx-2 flex">
+			<span
+				class="mx-2 w-[8rem]">
+				IP
+			</span>
+			<span
+				class="font-mono mx-2">
+				{{ store.token?.ip }}
+			</span>
+		</p>
+
+		<p
+			class="-mx-2 flex">
+			<span
+				class="mx-2 w-[8rem]">
+				IP 位置
+			</span>
+			<span
+				class="font-mono mx-2">
+				{{ store.token?.ip_location }}
 			</span>
 		</p>
 

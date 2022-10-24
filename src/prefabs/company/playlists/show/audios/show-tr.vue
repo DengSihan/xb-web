@@ -120,7 +120,19 @@
 
 			<template
 				v-if="audio.category === 2">
-			
+
+				<li
+					class="flex">
+					<strong
+						class="w-[8rem]">
+						播放时间
+					</strong>
+					<span
+						class="w-[calc(100%-8rem)]">
+						{{ audio.play_at }}
+					</span>
+				</li>
+
 				<li
 					class="flex">
 					<strong
@@ -132,6 +144,7 @@
 						{{ audio.count }}
 					</span>
 				</li>
+				
 				<li
 					v-if="audio.count > 1"
 					class="flex">
