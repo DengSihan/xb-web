@@ -158,7 +158,45 @@
 					</span>
 				</li>
 				
-			</template>	
+			</template>
+			<template
+				v-else-if="audio.category === 3">
+
+				<li
+					class="flex">
+					<strong
+						class="w-[8rem]">
+						播放间隔
+					</strong>
+					<span
+						class="w-[calc(100%-8rem)]">
+						{{ audio.interval }} 首背景音乐
+					</span>
+				</li>
+				<li
+					class="flex">
+					<strong
+						class="w-[8rem]">
+						播放开始日期
+					</strong>
+					<span
+						class="w-[calc(100%-8rem)]">
+						{{ audio.promote_start_date }}
+					</span>
+				</li>
+				<li
+					class="flex">
+					<strong
+						class="w-[8rem]">
+						播放结束日期
+					</strong>
+					<span
+						class="w-[calc(100%-8rem)]">
+						{{ audio.promote_end_date }}
+					</span>
+				</li>
+
+			</template>
 
 			<li
 				class="flex">
