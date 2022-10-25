@@ -88,6 +88,26 @@
 						'指播放播放多少首背景音乐后再播放此音频'
 					]"
 					required/>
+				<xb-input
+					class="my-4"
+					v-model="form.promote_start_date"
+					v-model:errors="errors.promote_start_date"
+					name="promote_start_date"
+					type="date"
+					placeholder="促销开始日期"
+					:tips="[
+						'可选，不填则为创建后即播放'
+					]"/>
+				<xb-input
+					class="my-4"
+					v-model="form.promote_end_date"
+					v-model:errors="errors.promote_end_date"
+					name="promote_end_date"
+					type="date"
+					placeholder="促销结束日期"
+					:tips="[
+						'可选，不填则为永不结束'
+					]"/>
 			</template>
 
 
@@ -223,6 +243,8 @@ let {
 	play_at: null,
 	between: null,
 	count: 1,
+	promote_start_date: null,
+	promote_end_date: null,
 });
 
 const storeAudios = () => {
