@@ -246,7 +246,7 @@
 						controls
 						controlsList="nodownload">
 						<source
-							:src="audio.path"
+							:src="audio.url"
 							type="audio/mpeg">
 					</audio>
 				</span>
