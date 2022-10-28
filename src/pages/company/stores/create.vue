@@ -114,7 +114,10 @@ const storeStore = () => {
 				type: 'success'
 			});
 			router.push({
-				name: 'stores',
+				name: 'stores/show',
+				params: {
+					storeId: data.id
+				}
 			});
 		})
 		.catch(errors => {

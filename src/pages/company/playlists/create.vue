@@ -81,7 +81,10 @@ const storePlaylist = () => {
 				type: 'success'
 			});
 			router.push({
-				name: 'playlists',
+				name: 'playlists/show',
+				params: {
+					playlistId: data.id,
+				}
 			});
 		})
 		.catch(errors => {
