@@ -34,9 +34,19 @@
 			class="h-[calc(100vh-theme('space.28'))] overflow-y-auto p-4">
 
 			<router-link
-				:to="{
-					name: 'stores'
-				}"
+				v-for="item in [
+					...sidebar,
+					{
+						label: `
+							<i
+								class='mdi mdi-fingerprint mr-2'></i>
+							授权管理
+						`,
+						route: {
+							name: 'tokens'
+						}
+					}]"
+				:to="item.route"
 				custom
 				v-slot="{ isActive, href, navigate, route }">
 				<a
@@ -48,55 +58,8 @@
 							: 'bg-slate-100 hover:bg-slate-200 text-slate-700'
 					]"
 					@click.prevent="nav(navigate)"
-					v-wave>
-					<i
-						class="mdi mdi-store mr-2"></i>
-					门店管理
-				</a>
-			</router-link>
-
-			<router-link
-				:to="{
-					name: 'playlists'
-				}"
-				custom
-				v-slot="{ isActive, href, navigate, route }">
-				<a
-					class="block p-3 mb-2 rounded"
-					:href="href"
-					:class="[
-						(isActive || $route.path.startsWith(route.fullPath) )
-							? 'bg-slate-200 text-slate-900'
-							: 'bg-slate-100 hover:bg-slate-200 text-slate-700'
-					]"
-					@click.prevent="nav(navigate)"
-					v-wave>
-					<i
-						class="mdi mdi-playlist-music mr-2"></i>
-					播放列表管理
-				</a>
-			</router-link>
-
-			<router-link
-				:to="{
-					name: 'tokens'
-				}"
-				custom
-				v-slot="{ isActive, href, navigate, route }">
-				<a
-					class="block p-3 mb-2 rounded"
-					:href="href"
-					:class="[
-						(isActive || $route.path.startsWith(route.fullPath) )
-							? 'bg-slate-200 text-slate-900'
-							: 'bg-slate-100 hover:bg-slate-200 text-slate-700'
-					]"
-					@click.prevent="nav(navigate)"
-					v-wave>
-					<i
-						class="mdi mdi-fingerprint mr-2"></i>
-					授权管理
-				</a>
+					v-html="item.label"
+					v-wave/>
 			</router-link>
 
 		</nav>
@@ -149,7 +112,7 @@
 				class="flex items-center -mx-2">
 				<strong
 					class="mx-2 text-slate-800">
-					{{ company.name }}
+					{{ name }}
 				</strong>
 				<button
 					@click="showLogoutDialog = true"
@@ -349,8 +312,6 @@ const showLogoutDialog = ref(false);
 
 const router = useRouter();
 
-const company = computed(() => useAuth()?.company);
-
 const {
 	loading,
 } = useForm();
@@ -370,6 +331,19 @@ const destroyCurrentToken = () => {
 			loading.value = false;
 		});
 };
+
+const props = defineProps({
+	sidebar: {
+		required: false,
+		type: Array,
+		default: () => []
+	},
+	name: {
+		required: false,
+		type: String,
+		default: ''
+	}
+});
 
 </script>
 

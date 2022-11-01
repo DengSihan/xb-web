@@ -4,6 +4,9 @@ import NProgress from 'nprogress';
 import guestCompany from '~/middlewares/company/guest.js';
 import authCompany from '~/middlewares/company/auth.js';
 
+import guestAdmin from '~/middlewares/admin/guest.js';
+import authAdmin from '~/middlewares/admin/auth.js';
+
 // vite 不支持多 / 的动态引入
 // https://github.com/vitejs/vite/issues/4945
 const page = path => () => import(`./pages/${path}.vue`);
@@ -118,15 +121,64 @@ if (mode === 'company') {
 else if (mode === 'admin') {
 	routes = [
 		{
-			path: '/',
-			name: 'index',
-			component: () => import('~/pages/admin/index.vue'),
-		},
-		{
 			path: '/login',
 			name: 'login',
 			component: () => import('~/pages/admin/login.vue'),
-		}
+			beforeEnter: guestAdmin,
+		},
+
+		{
+			path: '/',
+			component: () => import('~/pages/admin/_dashboard.vue'),
+			beforeEnter: authAdmin,
+			children: [
+
+				{
+					path: '',
+					name: 'index',
+					component: () => import('~/pages/admin/index.vue'),
+				},
+
+				{
+					path: 'companies',
+					name: 'companies',
+					component: () => import('~/pages/admin/companies/index.vue'),
+				},
+				{
+					path: 'companies/create',
+					name: 'companies/create',
+					component: () => import('~/pages/admin/companies/create.vue'),
+				},
+				{
+					path: 'companies/:companyId',
+					component: () => import('~/pages/admin/companies/show.vue'),
+					props: true,
+					children: [
+						{
+							path: '',
+							name: 'companies/show',
+							component: () => import('~/pages/admin/companies/show/index.vue'),
+						},
+						{
+							path: 'edit',
+							name: 'companies/show/edit',
+							component: () => import('~/pages/admin/companies/show/edit.vue'),
+						},
+						{
+							path: 'stores',
+							name: 'companies/show/stores',
+							component: () => import('~/pages/admin/companies/show/stores.vue'),
+						},
+					]
+				},
+	
+				{
+					path: 'tokens',
+					name: 'tokens',
+					component: () => import('~/pages/commons/tokens.vue'),
+				},
+			]
+		},
 	];
 }
 else {
