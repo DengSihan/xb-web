@@ -162,12 +162,12 @@
 			</form>
 		</custom-dialog>
 
-		<!-- <div
+		<div
 			id="dashboard-content"
 			class="h-[calc(100vh-theme('space.16'))] overflow-y-auto px-4">
 			<router-view/>
 
-			<footer
+			<!-- <footer
 				class="mt-4 border-t-[3px] border-slate-100 pt-4 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
 
 				<section>
@@ -287,9 +287,9 @@
 					class="w-4 h-4 mr-2"
 					src="/logo-xs.png">
 				广播云 Copyright © {{ year }} 重庆相对科技有限公司
-			</p>
+			</p> -->
 
-		</div> -->
+		</div>
 		
 
 	</main>
