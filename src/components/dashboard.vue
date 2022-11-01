@@ -162,7 +162,7 @@
 			</form>
 		</custom-dialog>
 
-		<div
+		<!-- <div
 			id="dashboard-content"
 			class="h-[calc(100vh-theme('space.16'))] overflow-y-auto px-4">
 			<router-view/>
@@ -289,7 +289,7 @@
 				广播云 Copyright © {{ year }} 重庆相对科技有限公司
 			</p>
 
-		</div>
+		</div> -->
 		
 
 	</main>
