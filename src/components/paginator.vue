@@ -47,7 +47,7 @@
 				</span>
 				<router-link
 					class="page-index"
-					:to="page !== 1
+					:to="page != 1
 						? {
 							...$route,
 							query: {
@@ -105,11 +105,15 @@ export default {
 		},
 
 		firstRoute () {
-			let route = {
-				...this.$route
-			};
 
-			delete route.query.page;
+			let query = lodash.cloneDeep(this.$route.query);
+
+			delete query.page;
+
+			let route = {
+				...this.$route,
+				query
+			};
 
 			return route;
 		},
