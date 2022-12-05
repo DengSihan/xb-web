@@ -9,17 +9,15 @@ import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import { createMetaManager } from 'vue-meta';
 import Notifications from '@kyvg/vue3-notification';
+
+import xb from 'xb-design';
+import router from '~/router.js';
 import App from '~/App.vue';
 
-const metaManager = createMetaManager();
-
-import xiangdui from 'xb-design';
-import router from '~/router.js';
-
-const app = createApp(App)
+createApp(App)
+	.use(xb)
 	.use(createPinia())
-	.use(xiangdui)
 	.use(Notifications)
 	.use(router)
-	.use(metaManager)
+	.use(createMetaManager())
 	.mount('#app');

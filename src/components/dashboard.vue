@@ -34,22 +34,16 @@
 			class="h-[calc(100vh-theme('space.28'))] overflow-y-auto p-4">
 
 			<router-link
-				v-for="item in [
-					...sidebar,
-					{
-						label: `
-							<i
-								class='mdi mdi-fingerprint mr-2'></i>
-							授权管理
-						`,
-						route: {
-							name: 'tokens'
-						}
-					}]"
+				v-for="item in sidebar"
 				:to="item.route"
 				custom
 				v-slot="{ isActive, href, navigate, route }">
 				<a
+					v-if="
+						Object.keys(item).includes('allows')
+							? item.allows.includes(mode)
+							: true
+					"
 					class="block p-3 mb-2 rounded"
 					:href="href"
 					:class="[
@@ -164,132 +158,22 @@
 
 		<div
 			id="dashboard-content"
-			class="h-[calc(100vh-theme('space.16'))] overflow-y-auto px-4">
+			class="h-[calc(100vh-theme('space.28'))] overflow-y-auto px-4">
+			
 			<router-view/>
 
-			<!-- <footer
-				class="mt-4 border-t-[3px] border-slate-100 pt-4 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+		</div>
 
-				<section>
-					<h3
-						class="text-lg mb-2 font-semibold">
-						广播云
-					</h3>
-					<nav
-						class="pl-6 text-sm">
-						<a
-							class="list-item w-fit mb-2"
-							:href="`//${host}/`">
-							主页		
-						</a>
-						<a
-							class="list-item w-fit mb-2"
-							:href="`//company.${host}/`">
-							企业用户		
-						</a>
-						<a
-							class="list-item w-fit mb-2"
-							:href="`//store.${host}/`">
-							门店用户		
-						</a>
-						<a
-							class="list-item w-fit mb-2"
-							:href="`//admin.${host}/`">
-							管理员		
-						</a>
-					</nav>
-				</section>
-
-				<section>
-					<h3
-						class="text-lg mb-2 font-semibold">
-						客户端
-					</h3>
-					<nav
-						class="pl-6 text-sm">
-						<router-link
-							class="mb-2 list-item w-fit"
-							:to="{
-								name: 'apps'
-							}">
-							Electron 版
-						</router-link>
-						<router-link
-							class="mb-2 list-item w-fit"
-							:to="{
-								name: 'apps'
-							}">
-							Web PWA 版
-						</router-link>
-					</nav>
-				</section>
-
-				<section>
-					<h3
-						class="text-lg mb-2 font-semibold">
-						相关信息
-					</h3>
-					<nav
-						class="pl-6 text-sm">
-						<router-link
-							class="mb-2 list-item w-fit"
-							:to="{
-								name: 'private-policy'
-							}">
-							隐私政策
-						</router-link>
-						<router-link
-							class="mb-2 list-item w-fit"
-							:to="{
-								name: 'private-policy'
-							}">
-							CHANGELOG
-						</router-link>
-						<router-link
-							class="mb-2 list-item w-fit"
-							:to="{
-								name: 'private-policy'
-							}">
-							SITEMAP
-						</router-link>
-					</nav>
-				</section>
-				
-				<section>
-					<h3
-						class="text-lg mb-2 font-semibold">
-						关于我们
-					</h3>
-					<nav
-						class="pl-6 text-sm">
-						<router-link
-							class="mb-2 list-item w-fit"
-							:to="{
-								name: 'private-policy'
-							}">
-							商务合作
-						</router-link>
-						<router-link
-							class="mb-2 list-item w-fit"
-							:to="{
-								name: 'apps'
-							}">
-							联系我们
-						</router-link>
-					</nav>
-				</section>
-				
-			</footer>
-
+		<footer
+			class="h-12">
 			<p
-				class="text-xs py-4 flex items-center justify-center">
+				class="text-xs flex items-center justify-center leading-4 py-4">
 				<img
 					class="w-4 h-4 mr-2"
 					src="/logo-xs.png">
 				广播云 Copyright © {{ year }} 重庆相对科技有限公司
-			</p> -->
-
-		</div>
+			</p>
+		</footer>
 		
 
 	</main>
@@ -298,11 +182,14 @@
 
 <script setup>
 
-import { ref, defineAsyncComponent, computed } from 'vue';
+import { ref, defineAsyncComponent } from 'vue';
 import { useForm } from '~/composables/form.js';
 import { useRouter } from 'vue-router';
-import { useAuth } from '~/plugins/mode.js';
+import { useAuth } from '~/stores/auth.js';
 import axios from '~/plugins/axios.js';
+import getCurrentMode from '~/plugins/mode.js';
+
+const mode = getCurrentMode();
 
 const year = (new Date()).getFullYear();
 
@@ -348,7 +235,7 @@ const props = defineProps({
 </script>
 
 <script>
-import resolveConfig from 'tailwindcss/resolveConfig'
+import resolveConfig from 'tailwindcss/resolveConfig';
 
 
 const { theme } = resolveConfig({});

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import router from '~/router.js';
-import { useAuth } from '~/plugins/mode.js';
+import { useAuth } from '~/stores/auth.js';
 import { notify } from '@kyvg/vue3-notification';
 
 const statusText = {
@@ -74,6 +74,7 @@ axios.interceptors.request.use(
 	config => {
 
 		let token = useAuth().token;
+
 		if (token) {
 			config.headers.Authorization = `Bearer ${token}`;
 		}
@@ -110,7 +111,10 @@ axios.interceptors.response.use(
 			useAuth().clearAuth();
 
 			router.push({
-				name: 'login'
+				name: 'login',
+                query: {
+                    redirect: router.currentRoute.value.fullPath
+                }
 			});
 		}
 

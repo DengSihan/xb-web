@@ -1,221 +1,147 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import NProgress from 'nprogress';
 
-import guestCompany from '~/middlewares/company/guest.js';
-import authCompany from '~/middlewares/company/auth.js';
+import guest from '~/middlewares/guest.js';
+import auth from '~/middlewares/auth.js';
+import mode from '~/middlewares/mode.js';
+import getCurrentMode from '~/plugins/mode.js';
 
-import guestAdmin from '~/middlewares/admin/guest.js';
-import authAdmin from '~/middlewares/admin/auth.js';
+let routes = [];
 
-// vite 不支持多 / 的动态引入
-// https://github.com/vitejs/vite/issues/4945
-const page = path => () => import(`./pages/${path}.vue`);
+if (['admin', 'enterprise', 'company'].includes(getCurrentMode())) {
+    routes = [
+        {
+            path: '/login',
+            name: 'login',
+            component: () => import('~/pages/login.vue'),
+            beforeEnter: guest
+        },
+        {
+            path: '/',
+            component: () => import('~/pages/_dashboard.vue'),
+            beforeEnter: auth,
+            children: [
+                {
+                    path: '',
+                    name: 'index',
+                    component: () => import('~/pages/index.vue')
+                },
+                {
+                    path: 'tokens',
+                    name: 'tokens',
+                    component: () => import('~/pages/tokens.vue')
+                },
 
+                {
+                    path: 'audios',
+                    name: 'audios',
+                    component: () => import('~/pages/audios/index.vue')
+                },
+                {
+                    path: 'audios/create',
+                    name: 'audios/create',
+                    component: () => import('~/pages/audios/create.vue')
+                },
 
-let routes = [],
-	mode = window.location.host.split('.')[0];
+                {
+                    path: 'enterprises',
+                    name: 'enterprises',
+                    component: () => import('~/pages/enterprises/index.vue'),
+                    beforeEnter: mode(['admin'])
+                },
+                {
+                    path: 'enterprises/create',
+                    name: 'enterprises/create',
+                    component: () => import('~/pages/enterprises/create.vue'),
+                    beforeEnter: mode(['admin'])
+                },
+                {
+                    path: 'enterprises/:enterpriseId',
+                    name: 'enterprises/show',
+                    component: () => import('~/pages/enterprises/show.vue'),
+                    beforeEnter: mode(['admin']),
+                    props: true,
+                },
 
-if (mode === 'company') {
-	routes = [
-		{
-			path: '/login',
-			name: 'login',
-			component: () => import('~/pages/company/login.vue'),
-			beforeEnter: guestCompany,
-		},
-	
-		{
-			path: '/',
-			component: () => import('~/pages/company/_dashboard.vue'),
-			beforeEnter: authCompany,
-			children: [
-				{
-					path: '',
-					name: 'index',
-					component: () => import('~/pages/company/index.vue'),
-				},
-	
-				{
-					path: 'tokens',
-					name: 'tokens',
-					component: () => import('~/pages/commons/tokens.vue'),
-				},
-	
-				{
-					path: 'stores',
-					name: 'stores',
-					component: () => import('~/pages/company/stores/index.vue'),
-				},
-				{
-					path: 'stores/create',
-					name: 'stores/create',
-					component: () => import('~/pages/company/stores/create.vue'),
-				},
-				{
-					path: 'stores/:storeId',
-					component: () => import('~/pages/company/stores/show.vue'),
-					props: true,
-					children: [
-						{
-							path: '',
-							name: 'stores/show',
-							component: () => import('~/pages/company/stores/show/index.vue'),
-						},
-						{
-							path: 'playlists',
-							name: 'stores/show/playlists',
-							component: () => import('~/pages/company/stores/show/playlists.vue'),
-							props: true,
-						},
-						{
-							path: 'edit',
-							name: 'stores/show/edit',
-							component: () => import('~/pages/company/stores/show/edit.vue'),
-							props: true,
-						}
-					]
-				},
-				
-	
-				{
-					path: 'playlists',
-					name: 'playlists',
-					component: () => import('~/pages/company/playlists/index.vue'),
-				},
-				{
-					path: 'playlists/create',
-					name: 'playlists/create',
-					component: () => import('~/pages/company/playlists/create.vue'),
-				},
-				{
-					path: 'playlists/:playlistId',
-					component: () => import('~/pages/company/playlists/show.vue'),
-					props: true,
-					children: [
-						{
-							path: '',
-							name: 'playlists/show',
-							component: () => import('~/pages/company/playlists/show/index.vue'),
-						},
-						{
-							path: 'audios',
-							name: 'playlists/show/audios',
-							component: () => import('~/pages/company/playlists/show/audios.vue'),
-						},
-						{
-							path: 'stores',
-							name: 'playlists/show/stores',
-							component: () => import('~/pages/company/playlists/show/stores.vue'),
-						},
-						{
-							path: 'edit',
-							name: 'playlists/show/edit',
-							component: () => import('~/pages/company/playlists/show/edit.vue'),
-						},
-					]
-				}
-			]
-		},
-	];
-}
-else if (mode === 'admin') {
-	routes = [
-		{
-			path: '/login',
-			name: 'login',
-			component: () => import('~/pages/admin/login.vue'),
-			beforeEnter: guestAdmin,
-		},
+                {
+                    path: 'companies',
+                    name: 'companies',
+                    component: () => import('~/pages/companies/index.vue'),
+                    beforeEnter: mode(['admin', 'enterprise'])
+                },
+                {
+                    path: 'companies/create',
+                    name: 'companies/create',
+                    component: () => import('~/pages/companies/create.vue'),
+                    beforeEnter: mode(['admin', 'enterprise'])
+                },
+                {
+                    path: 'companies/:companyId',
+                    name: 'companies/show',
+                    component: () => import('~/pages/companies/show.vue'),
+                    beforeEnter: mode(['admin', 'enterprise']),
+                    props: true,
+                },
 
-		{
-			path: '/',
-			component: () => import('~/pages/admin/_dashboard.vue'),
-			beforeEnter: authAdmin,
-			children: [
+                {
+                    path: 'stores',
+                    name: 'stores',
+                    component: () => import('~/pages/stores/index.vue'),
+                    beforeEnter: mode(['admin', 'enterprise', 'company'])
+                },
+                {
+                    path: 'stores/create',
+                    name: 'stores/create',
+                    component: () => import('~/pages/stores/create.vue'),
+                    beforeEnter: mode(['admin', 'enterprise', 'company'])
+                },
+                {
+                    path: 'stores/:storeId',
+                    name: 'stores/show',
+                    component: () => import('~/pages/stores/show.vue'),
+                    beforeEnter: mode(['admin', 'enterprise', 'company']),
+                    props: true,
+                },
 
-				{
-					path: '',
-					name: 'index',
-					component: () => import('~/pages/admin/index.vue'),
-				},
+                {
+                    path: 'playlists',
+                    name: 'playlists',
+                    component: () => import('~/pages/playlists/index.vue'),
+                    beforeEnter: mode(['admin', 'enterprise', 'company'])
+                },
+                {
+                    path: 'playlists/create',
+                    name: 'playlists/create',
+                    component: () => import('~/pages/playlists/create.vue'),
+                    beforeEnter: mode(['admin', 'enterprise', 'company'])
+                },
+                {
+                    path: 'playlists/:playlistId',
+                    name: 'playlists/show',
+                    component: () => import('~/pages/playlists/show.vue'),
+                    beforeEnter: mode(['admin', 'enterprise', 'company']),
+                    props: true,
+                },
 
-				{
-					path: 'companies',
-					name: 'companies',
-					component: () => import('~/pages/admin/companies/index.vue'),
-				},
-				{
-					path: 'companies/create',
-					name: 'companies/create',
-					component: () => import('~/pages/admin/companies/create.vue'),
-				},
-				{
-					path: 'companies/:companyId',
-					component: () => import('~/pages/admin/companies/show.vue'),
-					props: true,
-					children: [
-						{
-							path: '',
-							name: 'companies/show',
-							component: () => import('~/pages/admin/companies/show/index.vue'),
-						},
-						{
-							path: 'edit',
-							name: 'companies/show/edit',
-							component: () => import('~/pages/admin/companies/show/edit.vue'),
-						},
-						{
-							path: 'stores',
-							name: 'companies/show/stores',
-							component: () => import('~/pages/admin/companies/show/stores.vue'),
-						},
-					]
-				},
-	
-				{
-					path: 'tokens',
-					name: 'tokens',
-					component: () => import('~/pages/commons/tokens.vue'),
-				},
-			]
-		},
-	];
+                
+            ]
+        },
+    ];
 }
 else {
-	routes = [
-		{
-			path: '/',
-			name: 'index',
-			component: () => import('~/pages/index/index.vue'),
-		},
-		{
-			path: '/download',
-			name: 'download',
-			component: () => import('~/pages/index/download.vue'),
-		},
-		{
-			path: '/win-win',
-			name: 'win-win',
-			component: () => import('~/pages/index/win-win.vue'),
-		}
-	];
+    routes = [];
 }
 
 let router = createRouter({
 	history: createWebHistory(),
 	routes: [
-		...routes,
-		{
-			path: '/private-policy',
-			name: 'private-policy',
-			component: () => import('~/pages/private-policy.vue')
-		},
-		{
-			path: '/apps',
-			name: 'apps',
-			component: () => import('~/pages/apps.vue')
-		},
-	]
+        {
+            path: '/:pathMatch(.*)*',
+            name: '404',
+            component: () => import('~/pages/404.vue')
+        },
+        ...routes
+    ]
 });
 
 router.beforeEach((to, from, next) => {
