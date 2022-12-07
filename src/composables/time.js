@@ -38,9 +38,14 @@ export const useTime = () => {
 			: null;
 	};
 
+	const isInMinutes = (timestamp, minutes = 3) => {
+		return dayjs().diff(timestamp, 'minute') < minutes;
+	}
+
 	return {
 		formatDuration,
 		fromNow,
 		formatTimestamp,
+		isInMinutes
 	};
 }

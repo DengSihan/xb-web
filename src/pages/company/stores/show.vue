@@ -25,8 +25,21 @@
 	</nav>
 
 	<h1
-		class="text-2xl font-bold my-4">
+		class="text-2xl font-bold my-4 flex items-center">
 		{{ store.name }}
+
+		<small
+			v-if="isActive(store.token)"
+			class="text-green-700 ml-2 text-base">
+			<i
+				class="mdi mdi-radiobox-marked mr-2"></i>在线
+		</small>
+		<small
+			v-else
+			class="text-slate-400 ml-2 text-base">
+			<i
+				class="mdi mdi-radiobox-blank mr-2"></i>离线
+		</small>
 	</h1>
 
 	<tabs
@@ -70,6 +83,7 @@
 <script setup>
 import { defineAsyncComponent, ref, onBeforeMount, computed } from 'vue';
 import { useMeta } from 'vue-meta';
+import { useTime } from '~/composables/time.js';
 import axios from '~/plugins/axios.js';
 
 const Tabs = defineAsyncComponent(() => import('~/components/tabs.vue'));''
@@ -93,6 +107,17 @@ onBeforeMount(async () => {
 	let { data } = await axios.get(`/stores/${storeId}`);
 	store.value = data;
 });
+
+const {
+	isInMinutes,
+} = useTime();
+
+const isActive = token => {
+	if (!token) {
+		return false;
+	}
+	return isInMinutes(token.last_used_at, 3);
+};
 </script>
 
 <script>

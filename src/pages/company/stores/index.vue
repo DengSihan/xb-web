@@ -40,7 +40,7 @@
 					营业时间
 				</th>
 				<th>
-					创建时间
+					在线状态
 				</th>
 				<th>
 					操作
@@ -51,7 +51,7 @@
 			<template
 				v-if="data.data?.length">
 				<tr
-					v-for="{id, code, name, close_at, open_at, created_at} in data.data">
+					v-for="{id, code, name, close_at, open_at, token = {}} in data.data">
 					<td
 						class="font-mono"
 						v-html="highlight(id)"/>
@@ -64,11 +64,18 @@
 						{{ open_at }} - {{ close_at }}
 					</td>
 					<td>
-						<time
-							:datetime="created_at"
-							:title="fromNow(created_at)">
-							{{ formatTimestamp(created_at) }}
-						</time>
+						<span
+							v-if="isActive(token)"
+							class="text-green-700">
+							<i
+								class="mdi mdi-radiobox-marked mr-2"></i>在线
+						</span>
+						<span
+							v-else
+							class="text-slate-400">
+							<i
+								class="mdi mdi-radiobox-blank mr-2"></i>离线
+						</span>
 					</td>
 					<td>
 						<router-link
@@ -112,15 +119,19 @@ useMeta({
 
 const {
 	data,
-	loading,
 	Paginator,
 	Filters,
 	highlight,
 } = usePaginate('/stores');
 
 const {
-	fromNow,
-	formatTimestamp,
+	isInMinutes,
 } = useTime();
 
+const isActive = token => {
+	if (!token) {
+		return false;
+	}
+	return isInMinutes(token.last_used_at, 3);
+};
 </script>
