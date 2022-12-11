@@ -120,7 +120,6 @@ let {
 } = useForm();
 
 let {
-    formatDuration,
     fromNow,
     formatTimestamp,
 } = useTime();

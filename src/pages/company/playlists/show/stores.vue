@@ -54,7 +54,12 @@
 	</table>
 	<paginator
 		class="my-4"
-		:paginate="data"/>
+		:paginate="data">
+		<destroy-all-stores-dialog
+			v-if="data.data?.length"
+			:playlist="playlist"
+			@destroyed="refreshData"/>
+	</paginator>
 </template>
 
 <script setup>
@@ -64,6 +69,10 @@ import { usePaginate } from '~/composables/paginate.js';
 
 const StoreStoreDialog = defineAsyncComponent(
 	() => import('~/prefabs/company/playlists/show/stores/store-store-dialog.vue'),
+);
+
+const DestroyAllStoresDialog = defineAsyncComponent(
+	() => import('~/prefabs/company/playlists/show/stores/destroy-all-stores-dialog.vue'),
 );
 
 const StoreShowTr = defineAsyncComponent(

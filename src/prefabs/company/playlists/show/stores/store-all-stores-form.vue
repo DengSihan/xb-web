@@ -2,8 +2,13 @@
     <form
         @submit.prevent="storeStore">
 
+		<p
+			class="my-8">
+			您确认要添加所有门店吗？
+		</p>
+
         <footer
-            class="flex justify-between mt-4">
+            class="flex justify-between">
             
             <xb-button
                 class="w-24"
