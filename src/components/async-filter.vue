@@ -1,0 +1,103 @@
+<template>
+    <nav
+        class="flex items-center mb-4 -mx-1">
+        <span
+            class="w-[8rem] mx-1"
+            v-html="label"/>
+        <router-link
+            :to="getOptionRoute(null)"
+            custom
+            v-slot="{ route, href, navigate }">
+            <a
+                class="text-sm p-1 rounded mx-1"
+                :href="href"
+                :class="[
+                    currentFullPath === route.fullPath ? 'text-white bg-blue-600' : ''
+                ]"
+                @click="navigate"
+                v-wave="currentFullPath !== route.fullPath"
+                v-html="nullLabel"/>
+        </router-link>
+        <router-link
+            v-for="{label, value} in options"
+            :key="`${param}-${value}`"
+            :to="getOptionRoute(value)"
+            custom
+            v-slot="{ route, href, navigate }">
+            <a
+                class="text-sm p-1 rounded mx-1"
+                :href="href"
+                :class="[
+                    currentFullPath === route.fullPath ? 'text-white bg-blue-600' : ''
+                ]"
+                @click="navigate"
+                v-wave="currentFullPath !== route.fullPath"
+                v-html="label"/>
+        </router-link>
+    </nav>
+</template>
+
+<script setup>
+import { useRoute, useRouter } from 'vue-router';
+import { ref, computed, watch, onBeforeMount } from 'vue';
+import { pick, cloneDeep } from 'lodash';
+import axios from '~/plugins/axios.js';
+
+const route = useRoute(),
+	router = useRouter();
+
+let props = defineProps({
+    api: {
+        required: true,
+        type: String,
+    },
+    label: {
+        required: true,
+        type: String,
+    },
+    param: {
+        required: true,
+        type: String,
+    },
+    nullLabel: {
+        required: false,
+        type: String,
+        default: '全部'
+    }
+});
+
+const options = ref([]);
+
+onBeforeMount(() => {
+    axios.get(props.api)
+        .then(({ data }) => {
+            options.value = data;
+        });
+});
+
+const getOptionRoute = (value) => {
+
+	let query = cloneDeep(route.query);
+
+	if (value !== (query[props.param] ?? '')) {
+		delete query.page;
+		query[props.param] = value;
+	}
+	
+	if (!value) {
+		delete query[props.param];
+	}
+
+	return {
+		...pick(route, ['name', 'params']),
+		query,
+	};
+};
+
+
+const currentFullPath = computed(() => {
+	return route.fullPath;
+});
+
+
+</script>

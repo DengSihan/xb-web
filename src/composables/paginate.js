@@ -12,6 +12,10 @@ export const usePaginate = api => {
 		import('~/components/filters.vue')
 	);
 
+	const AsyncFilter = defineAsyncComponent(() =>
+		import('~/components/async-filter.vue')
+	);
+
 	const route = useRoute();
 
 	let query = computed(() => route.query),
@@ -66,6 +70,7 @@ export const usePaginate = api => {
 	return {
 		Paginator,
 		Filters,
+		AsyncFilter,
 		data,
 		loading,
 		refreshData,

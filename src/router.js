@@ -171,6 +171,28 @@ else if (mode === 'admin') {
 						},
 					]
 				},
+
+				{
+					path: 'stores',
+					name: 'stores',
+					component: () => import('~/pages/admin/stores/index.vue'),
+				},
+				{
+					path: 'stores/create',
+					name: 'stores/create',
+					component: () => import('~/pages/admin/stores/create.vue'),
+				},
+
+				{
+					path: 'playlists',
+					name: 'playlists',
+					component: () => import('~/pages/admin/playlists/index.vue'),
+				},
+				{
+					path: 'playlists/create',
+					name: 'playlists/create',
+					component: () => import('~/pages/admin/playlists/create.vue'),
+				},
 	
 				{
 					path: 'tokens',

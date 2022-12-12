@@ -22,7 +22,27 @@
 		</router-link>
 	</nav>
 	<filters
-		searchLabel="ID/编号/名称"/>
+		searchLabel="ID/编号/名称"
+		:optionsables="[
+			{
+				key: 'online',
+				label: '在线状态',
+				options: [
+					{
+						label: '全部',
+						value: null
+					},
+					{
+						label: '在线',
+						value: '1'
+					},
+					{
+						label: '离线',
+						value: '0'
+					}
+				]
+			}
+		]"/>
 	<table
 		class="xb-table my-4">
 		<thead>

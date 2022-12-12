@@ -14,6 +14,7 @@
 		:class="{
 			'my-4': computedOptionsables.length
 		}">
+		<slot/>
 		<nav
 			v-for="{label, key, options} in computedOptionsables"
 			class="flex items-center mb-4 -mx-1">
@@ -53,8 +54,8 @@ const form = ref({
 });
 
 const keywordInRoute = computed(() => {
-	return route.query.value
-		? route.query.value
+	return route.query.keyword
+		? route.query.keyword
 		: '';
 });
 
@@ -71,9 +72,9 @@ let props = defineProps({
 		validator: columns => {
 			columns.forEach(order => {
 				if (
-					!('label' in optionsable) ||
-					!('options' in optionsable) ||
-					!('key' in optionsable)
+					!('label' in order) ||
+					!('options' in order) ||
+					!('key' in order)
 				) return false;
 			});
 

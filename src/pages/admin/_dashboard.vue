@@ -11,6 +11,26 @@
 				route: {
 					name: 'companies'
 				}
+			},
+			{
+				label: `
+					<i
+						class='mdi mdi-store mr-2'></i>
+						门店管理
+				`,
+				route: {
+					name: 'stores'
+				}
+			},
+			{
+				label: `
+					<i
+						class='mdi mdi-playlist-music mr-2'></i>
+						播放列表管理
+				`,
+				route: {
+					name: 'playlists'
+				}
 			}
 		]"/>
 </template>
