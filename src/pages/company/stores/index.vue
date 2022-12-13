@@ -152,6 +152,6 @@ const isActive = token => {
 	if (!token) {
 		return false;
 	}
-	return isInMinutes(token.last_used_at, 3);
+	return isInMinutes(token.last_used_at, 5);
 };
 </script>
