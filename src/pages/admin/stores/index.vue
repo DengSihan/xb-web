@@ -10,16 +10,6 @@
 			}">
 			门店列表
 		</router-link>
-
-		<router-link
-			class="absolute right-0"
-			:to="{
-				name: 'stores/create'
-			}">
-			<i
-				class="mdi mdi-plus"></i>
-			新增门店
-		</router-link>
 	</nav>
 	<filters
 		searchLabel="ID/编号/名称"
@@ -109,7 +99,7 @@
 						</span>
 					</td>
 					<td>
-						<!-- <router-link
+						<router-link
 							class="xb-link"
 							:to="{
 								name: 'stores/show',
@@ -118,7 +108,7 @@
 								}
 							}">
 							详情
-						</router-link> -->
+						</router-link>
 					</td>
 				</tr>
 			</template>

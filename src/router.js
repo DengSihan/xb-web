@@ -178,9 +178,28 @@ else if (mode === 'admin') {
 					component: () => import('~/pages/admin/stores/index.vue'),
 				},
 				{
-					path: 'stores/create',
-					name: 'stores/create',
-					component: () => import('~/pages/admin/stores/create.vue'),
+					path: 'stores/:storeId',
+					component: () => import('~/pages/company/stores/show.vue'),
+					props: true,
+					children: [
+						{
+							path: '',
+							name: 'stores/show',
+							component: () => import('~/pages/company/stores/show/index.vue'),
+						},
+						{
+							path: 'playlists',
+							name: 'stores/show/playlists',
+							component: () => import('~/pages/company/stores/show/playlists.vue'),
+							props: true,
+						},
+						{
+							path: 'edit',
+							name: 'stores/show/edit',
+							component: () => import('~/pages/company/stores/show/edit.vue'),
+							props: true,
+						}
+					]
 				},
 
 				{
@@ -192,6 +211,33 @@ else if (mode === 'admin') {
 					path: 'playlists/create',
 					name: 'playlists/create',
 					component: () => import('~/pages/admin/playlists/create.vue'),
+				},
+				{
+					path: 'playlists/:playlistId',
+					component: () => import('~/pages/company/playlists/show.vue'),
+					props: true,
+					children: [
+						{
+							path: '',
+							name: 'playlists/show',
+							component: () => import('~/pages/company/playlists/show/index.vue'),
+						},
+						{
+							path: 'audios',
+							name: 'playlists/show/audios',
+							component: () => import('~/pages/company/playlists/show/audios.vue'),
+						},
+						{
+							path: 'stores',
+							name: 'playlists/show/stores',
+							component: () => import('~/pages/company/playlists/show/stores.vue'),
+						},
+						{
+							path: 'edit',
+							name: 'playlists/show/edit',
+							component: () => import('~/pages/company/playlists/show/edit.vue'),
+						},
+					]
 				},
 	
 				{
