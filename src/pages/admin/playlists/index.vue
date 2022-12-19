@@ -77,7 +77,7 @@
 			<template
 				v-if="data.data?.length">
 				<tr
-					v-for="{id, count, duration, name, created_at, updated_at, company} in data.data">
+					v-for="{id, count, duration, name, created_at, updated_at, company, playable} in data.data">
 					<td
 						v-html="highlight(id)"/>
 					<td
