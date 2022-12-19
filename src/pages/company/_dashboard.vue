@@ -16,7 +16,7 @@
 				label: `
 					<i
 						class='mdi mdi-playlist-music mr-2'></i>
-						播放列表管理
+						公司播放列表管理
 				`,
 				route: {
 					name: 'playlists'

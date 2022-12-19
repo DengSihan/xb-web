@@ -210,7 +210,7 @@ else if (mode === 'admin') {
 				{
 					path: 'playlists/create',
 					name: 'playlists/create',
-					component: () => import('~/pages/admin/playlists/create.vue'),
+					component: () => import('~/pages/company/playlists/create.vue'),
 				},
 				{
 					path: 'playlists/:playlistId',
@@ -230,7 +230,7 @@ else if (mode === 'admin') {
 						{
 							path: 'stores',
 							name: 'playlists/show/stores',
-							component: () => import('~/pages/company/playlists/show/stores.vue'),
+							component: () => import('~/pages/admin/playlists/show/stores.vue'),
 						},
 						{
 							path: 'edit',

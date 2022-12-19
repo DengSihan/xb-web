@@ -54,7 +54,7 @@
 			<template
 				v-if="data.data?.length">
 				<tr
-					v-for="{id, count, duration, name, created_at, updated_at} in data.data">
+					v-for="{id, count, duration, name, created_at, updated_at, company} in data.data">
 					<td
 						v-html="highlight(id)"/>
 					<td
@@ -116,7 +116,7 @@ import { usePaginate } from '~/composables/paginate.js';
 import { useTime } from '~/composables/time.js';
 
 useMeta({
-	title: '播放列表',
+	title: '公共播放列表',
 });
 
 const {
@@ -124,6 +124,7 @@ const {
 	Paginator,
 	Filters,
 	highlight,
+	AsyncFilter,
 } = usePaginate('/playlists');
 
 const {
