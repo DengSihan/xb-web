@@ -42,15 +42,6 @@
 				}
 			},
 			{
-				label: `<i class='mdi mdi-store mr-2'></i>下属门店`,
-				route: {
-					name: 'companies/show/stores',
-					params: {
-						companyId,
-					}
-				},
-			},
-			{
 				label: `<i class='mdi mdi-square-edit-outline mr-2'></i>修改公司信息`,
 				route: {
 					name: 'companies/show/edit',

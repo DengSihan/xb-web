@@ -164,11 +164,6 @@ else if (mode === 'admin') {
 							name: 'companies/show/edit',
 							component: () => import('~/pages/admin/companies/show/edit.vue'),
 						},
-						{
-							path: 'stores',
-							name: 'companies/show/stores',
-							component: () => import('~/pages/admin/companies/show/stores.vue'),
-						},
 					]
 				},
 
