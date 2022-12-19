@@ -24,6 +24,9 @@
 					总时长
 				</th>
 				<th>
+					可播放
+				</th>
+				<th>
 					创建时间
 				</th>
 				<th>
@@ -49,6 +52,15 @@
 					<td>
 						<code
 							v-html="formatDuration( playlist.duration)"/>
+					</td>
+					<td>
+						<i
+							class="mdi mr-1"
+							:class="{
+								'mdi-check text-green-500': playlist.playable,
+								'mdi-close text-red-500': !playlist.playable,
+							}"></i>
+						{{ playlist.playable ? '是' : '否' }}
 					</td>
 					<td>
 						<time
@@ -86,7 +98,7 @@
 			<tr
 				v-else>
 				<td
-					colspan="7">
+					colspan="8">
 					<h4
 						class="py-4 text-slate-400">
 						没有结果

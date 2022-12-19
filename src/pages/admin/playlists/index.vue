@@ -128,7 +128,7 @@
 			<tr
 				v-else>
 				<td
-					colspan="6">
+					colspan="7">
 					<h4
 						class="py-4 text-slate-400">
 						没有结果
