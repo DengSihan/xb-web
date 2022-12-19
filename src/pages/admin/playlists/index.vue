@@ -22,7 +22,27 @@
 		</router-link>
 	</nav>
 	<filters
-		searchLabel="ID/名称"/>
+		searchLabel="ID/名称"
+		:optionsables="[
+			{
+				label: '可播放',
+				key: 'playable',
+				options: [
+					{
+						label: '全部',
+						value: ''
+					},
+					{
+						label: '是',
+						value: '1'
+					},
+					{
+						label: '否',
+						value: '0'
+					}
+				]
+			}
+		]"/>
 	<table
 		class="xb-table my-4">
 		<thead>
@@ -38,6 +58,9 @@
 				</th>
 				<th>
 					总时长
+				</th>
+				<th>
+					可播放
 				</th>
 				<th>
 					创建时间
@@ -64,6 +87,15 @@
 					</td>
 					<td>
 						{{ formatDuration(duration) }}
+					</td>
+					<td>
+						<i
+							class="mdi mr-1"
+							:class="{
+								'mdi-check text-green-500': playable,
+								'mdi-close text-red-500': !playable,
+							}"></i>
+						{{ playable ? '是' : '否' }}
 					</td>
 					<td>
 						<time
