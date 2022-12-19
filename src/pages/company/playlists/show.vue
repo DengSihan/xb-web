@@ -25,8 +25,19 @@
 	</nav>
 
 	<h1
-		class="text-2xl font-bold my-4">
+		class="text-2xl font-bold my-4 flex items-center">
 		{{ playlist.name }}
+
+		<small
+			class="text-base ml-2 text-slate-700">
+			<i
+				class="mdi mr-1"
+				:class="{
+					'mdi-check text-green-500': playlist.playable,
+					'mdi-close text-red-500': !playlist.playable,
+				}"></i>
+			{{ playlist.playable ? '可播放' : '不可播放' }}
+		</small>
 	</h1>
 
 	<tabs

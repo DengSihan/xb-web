@@ -54,6 +54,24 @@
 			class="-mx-2 flex">
 			<span
 				class="mx-2 w-[8rem]">
+				可播放
+			</span>
+			<span
+				class="font-mono mx-2">
+				<i
+					class="mdi mr-1"
+					:class="{
+						'mdi-check text-green-500': playlist.playable,
+						'mdi-close text-red-500': !playlist.playable,
+					}"></i>
+				{{ playlist.playable ? '是' : '否' }}
+			</span>
+		</p>
+
+		<p
+			class="-mx-2 flex">
+			<span
+				class="mx-2 w-[8rem]">
 				创建时间
 			</span>
 			<time

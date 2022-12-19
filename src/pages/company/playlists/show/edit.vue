@@ -35,6 +35,24 @@
 			class="flex my-4">
 			<h2
 				class="w-32 leading-10 font-semibold">
+				切换播放状态
+			</h2>
+			<form
+				class="p-4 bg-amber-50 rounded w-[calc(100%-theme('space.32'))]"
+				@submit.prevent="toggle">
+				<xb-button
+					:loading="toggleLoading"
+					class="ml-auto block"
+					scheme="alert">
+					切换播放状态至 <strong>{{ playlist.playable ? '不可播放' : '可播放' }}</strong>
+				</xb-button>
+			</form>
+		</li>
+
+		<li
+			class="flex my-4">
+			<h2
+				class="w-32 leading-10 font-semibold">
 				删除列表
 			</h2>
 			<form
@@ -72,7 +90,7 @@ import axios from '~/plugins/axios.js';
 
 const emit = defineEmits(['update:playlist']);
 
-const { playlist } = defineProps(['playlist']);
+const props = defineProps(['playlist']);
 
 const baseForm = {
 	name: '',
@@ -87,13 +105,13 @@ let {
 } = useForm(baseForm);
 
 onBeforeMount(async () => {
-	form.value = pick(playlist, Object.keys(baseForm));
+	form.value = pick(props.playlist, Object.keys(baseForm));
 });
 
 const update = () => {
 	loading.value = true;
 	axios.put(
-			`/playlists/${playlist.id}`,
+			`/playlists/${props.playlist.id}`,
 			form.value,
 		)
 		.then(({ data }) => {
@@ -113,12 +131,33 @@ const update = () => {
 		});
 };
 
+let toggleLoading = ref(false);
+
+const toggle = () => {
+	toggleLoading.value = true;
+	axios[props.playlist.playable ? 'delete' : 'post'](
+			`/playlists/${props.playlist.id}/playable`,
+		)
+		.then(({ data }) => {
+			emit('update:playlist', data);
+			notify({
+			    title: '切换成功',
+			    text: `已切换至 <strong>${data.playable ? '可播放' : '不可播放'}</strong>`,
+			    type: 'success',
+			});
+		})
+		.finally(() => {
+			toggleLoading.value = false;
+		});
+};
+
+
+
 let {
 	form: destroyForm,
 	errors: destroyFormErrors,
 	loading: destroying,
 	handleFormErrors: handleDestroyFormErrors,
-	clearFormErrors: clearDestroyFormErrors,
 } = useForm({name: ''});
 
 const router = useRouter();
@@ -126,7 +165,7 @@ const router = useRouter();
 const destroy = () => {
 	destroying.value = true;
 	axios.delete(
-			`/playlists/${playlist.id}`,
+			`/playlists/${props.playlist.id}`,
 			{
 				data: destroyForm.value,
 			}
@@ -138,7 +177,7 @@ const destroy = () => {
 				.then(() => {
 					notify({
 					    title: '删除成功',
-					    text: `<strong>${playlist.name}</strong> 已删除`,
+					    text: `<strong>${props.playlist.name}</strong> 已删除`,
 					    type: 'success',
 					});
 				});

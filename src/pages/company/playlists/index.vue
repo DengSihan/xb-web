@@ -22,7 +22,27 @@
 		</router-link>
 	</nav>
 	<filters
-		searchLabel="ID/名称"/>
+		searchLabel="ID/名称"
+		:optionsables="[
+			{
+				label: '可播放',
+				key: 'playable',
+				options: [
+					{
+						label: '全部',
+						value: ''
+					},
+					{
+						label: '是',
+						value: '1'
+					},
+					{
+						label: '否',
+						value: '0'
+					}
+				]
+			}
+		]"/>
 	<table
 		class="xb-table my-4">
 		<thead>
@@ -40,6 +60,9 @@
 					总时长
 				</th>
 				<th>
+					可播放
+				</th>
+				<th>
 					创建时间
 				</th>
 				<th>
@@ -54,7 +77,7 @@
 			<template
 				v-if="data.data?.length">
 				<tr
-					v-for="{id, count, duration, name, created_at, updated_at} in data.data">
+					v-for="{id, count, duration, name, created_at, updated_at, playable} in data.data">
 					<td
 						v-html="highlight(id)"/>
 					<td
@@ -64,6 +87,15 @@
 					</td>
 					<td>
 						{{ formatDuration(duration) }}
+					</td>
+					<td>
+						<i
+							class="mdi mr-1"
+							:class="{
+								'mdi-check text-green-500': playable,
+								'mdi-close text-red-500': !playable,
+							}"></i>
+						{{ playable ? '是' : '否' }}
 					</td>
 					<td>
 						<time
