@@ -17,26 +17,29 @@
 		<slot/>
 		<nav
 			v-for="{label, key, options} in computedOptionsables"
-			class="flex items-center mb-4 -mx-1">
+			class="flex items-start mb-2">
 			<span
-				class="w-[8rem] mx-1"
+				class="w-[8rem] leading-8"
 				v-html="label"/>
-			<router-link
-				v-for="{label, value} in options"
-				:key="`${key}-${value}`"
-				:to="getOptionRoute(key, value)"
-				custom
-				v-slot="{ route, href, navigate }">
-				<a
-					class="text-sm p-1 rounded mx-1"
-					:href="href"
-					:class="[
-						currentFullPath === route.fullPath ? 'text-white bg-blue-600' : ''
-					]"
-					@click="navigate"
-					v-wave="currentFullPath !== route.fullPath"
-					v-html="label"/>
-			</router-link>
+			<div
+				class="w-[calc(100%-8rem)] -m-1">
+				<router-link
+					v-for="{label, value} in options"
+					:key="`${key}-${value}`"
+					:to="getOptionRoute(key, value)"
+					custom
+					v-slot="{ route, href, navigate }">
+					<a
+						class="text-sm p-1 rounded m-1 inline-block whitespace-nowrap"
+						:href="href"
+						:class="[
+							currentFullPath === route.fullPath ? 'text-white bg-blue-600' : ''
+						]"
+						@click="navigate"
+						v-wave="currentFullPath !== route.fullPath"
+						v-html="label"/>
+				</router-link>
+			</div>
 		</nav>
 	</section>
 </template>
