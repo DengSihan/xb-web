@@ -35,6 +35,8 @@
 		</xb-button>
 
 	</form>
+
+	<law-serial-number/>
 </template>
 
 <script setup>
@@ -45,6 +47,7 @@ import { useAuth } from '~/store/company/auth.js';
 
 import { useMeta } from 'vue-meta';
 import { useRouter } from 'vue-router';
+import LawSerialNumber from '~/components/law-serial-number.vue';
 
 useMeta({
 	title: '登录 - 广播云',

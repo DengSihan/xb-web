@@ -54,14 +54,19 @@
 
 	</header>
 
-	<main>
+	<main
+		class="min-h-[calc(100vh-200px)]"
+	>
 		<!-- <index-title/> -->
 	</main>
+
+	<law-serial-number/>
 
 </template>
 
 <script setup>
 import { useMeta } from 'vue-meta';
+import LawSerialNumber from '~/components/law-serial-number.vue';
 
 useMeta({
 	title: '广播云',
